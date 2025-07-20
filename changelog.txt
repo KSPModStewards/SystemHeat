@@ -1,3 +1,7 @@
+v0.8.2
+------
+- Fixed ungated debug loop strings
+
 v0.8.1
 ------
 - Fixed an issue which would cause the heat loop animation in the overlay not to play if there was a loop with only negative fluxes (#125)

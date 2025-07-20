@@ -212,7 +212,6 @@ namespace SystemHeat.UI
         bool.TryParse(module.Fields.GetValue("Enabled").ToString(), out bool isOn);
         if (isOn != onToggle.isOn)
         {
-          Debug.Log($"State forced to {isOn}");
           onToggle.SetIsOnWithoutNotify(isOn);
         }
 
@@ -256,7 +255,6 @@ namespace SystemHeat.UI
         bool.TryParse(module.Fields.GetValue("Enabled").ToString(), out bool isOn);
         if (isOn != onToggle.isOn)
         {
-          Debug.Log($"State forced to {isOn}");
           onToggle.SetIsOnWithoutNotify(isOn);
         }
         
