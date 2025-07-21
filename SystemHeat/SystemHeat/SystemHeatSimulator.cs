@@ -260,7 +260,6 @@ namespace SystemHeat
       {
         return HeatLoops.Find(x => x.ID == id);
       }
-      Utils.Log("nah loop");
       return null;
     }
     public void ResetTemperatures()
