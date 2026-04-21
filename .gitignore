@@ -184,6 +184,5 @@ FakesAssemblies/
 GameData/SystemHeat/Parts/@thumbs
 
 # KSPBuildTools / SDK-style build
-/*.props.user
 *.binlog
 /GameData/SystemHeat/Plugin
