@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using KSP.Localization;
-using System.Data;
 
 namespace SystemHeat.UI
 {
