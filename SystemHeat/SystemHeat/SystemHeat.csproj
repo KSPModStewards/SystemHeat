@@ -33,7 +33,6 @@
 
   <Target Name="CopyExtrasToPluginFolder" AfterTargets="KSPBT_CopyDLLsToPluginFolder">
     <ItemGroup>
-      <_ExtrasToCopy Include="$(TargetDir)/**/*.pdb" />
       <_ExtrasToCopy Include="$(TargetDir)/**/*.xml" />
     </ItemGroup>
 
