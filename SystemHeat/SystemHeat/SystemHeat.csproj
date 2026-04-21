@@ -1,150 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1C84F8C1-7C2D-4220-98B1-7B3E0EE8416C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SystemHeat</RootNamespace>
+    <Version>0.8.2</Version>
     <AssemblyName>SystemHeat</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <RootNamespace>SystemHeat</RootNamespace>
+    <TargetFramework>net481</TargetFramework>
+
+    <FileVersion>$(Version)</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
+
+    <Description>Heat handling system for Kerbal Space Program</Description>
+    <Company>Area Denial Games</Company>
+    <Product>SystemHeat</Product>
+    <Copyright>Copyright © Chris Adderley 2014</Copyright>
+
+    <KSPBT_ModRoot>$(ProjectRootDir)GameData\SystemHeat</KSPBT_ModRoot>
+    <KSPBT_ModPluginFolder>Plugin</KSPBT_ModPluginFolder>
+
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPAssets">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPAssets.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.UIModule.dll</HintPath>
-    </Reference>
+    <PackageReference Include="KSPBuildTools" Version="1.1.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="ArrayUtils.cs" />
-    <Compile Include="EngineerReport\SystemHeatTests.cs" />
-    <Compile Include="HeatLoop.cs" />
-    <Compile Include="Modules\BoiloffFuel.cs" />
-    <Compile Include="Modules\ModuleSystemHeat.cs" />
-    <Compile Include="Modules\ModuleSystemHeatAnimateHeat.cs" />
-    <Compile Include="Modules\ModuleSystemHeatCometHarvester.cs" />
-    <Compile Include="Modules\ModuleSystemHeatConverter.cs" />
-    <Compile Include="Modules\ModuleSystemHeatBaseConverterAdapter.cs" />
-    <Compile Include="Modules\ModuleSystemHeatCryoTank.cs" />
-    <Compile Include="Modules\ModuleSystemHeatEngine.cs" />
-    <Compile Include="Modules\ModuleSystemHeatExchanger.cs" />
-    <Compile Include="Modules\ModuleSystemHeatFissionEngine.cs" />
-    <Compile Include="Modules\ModuleSystemHeatFissionEngineOld.cs" />
-    <Compile Include="Modules\ModuleSystemHeatFissionFuelHandler.cs" />
-    <Compile Include="Modules\ModuleSystemHeatHarvester.cs" />
-    <Compile Include="Modules\ModuleSystemHeatRadiator.cs" />
-    <Compile Include="Modules\ModuleSystemHeatFissionReactor.cs" />
-    <Compile Include="Modules\ModuleSystemHeatResourceAnimator.cs" />
-    <Compile Include="Modules\ModuleSystemHeatSink.cs" />
-    <Compile Include="Modules\ModuleSystemHeatColorAnimator.cs" />
-    <Compile Include="ModuleUtils.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemHeat.cs" />
-    <Compile Include="SystemHeatAtmosphereSimulator.cs" />
-    <Compile Include="SystemHeatEditor.cs" />
-    <Compile Include="EngineerReport\SystemHeatEngineerReport.cs" />
-    <Compile Include="SystemHeatGameSettings.cs" />
-    <Compile Include="SystemHeatSimulator.cs" />
-    <Compile Include="SystemHeatVessel.cs" />
-    <Compile Include="UI\Overlay\OverlayAnimators.cs" />
-    <Compile Include="UI\Overlay\OverlayLine.cs" />
-    <Compile Include="UI\Overlay\OverlayLoop.cs" />
-    <Compile Include="UI\Overlay\OverlayPanel.cs" />
-    <Compile Include="UI\Overlay\OverlayPoint.cs" />
-    <Compile Include="UI\Overlay\SystemHeatOverlay.cs" />
-    <Compile Include="UI\ReactorUI\ReactorDataField.cs" />
-    <Compile Include="UI\ReactorUI\ReactorPanel.cs" />
-    <Compile Include="UI\ReactorUI\ReactorToolbar.cs" />
-    <Compile Include="UI\ReactorUI\ReactorWidget.cs" />
-    <Compile Include="UI\SystemHeatUI.cs" />
-    <Compile Include="UI\SystemHeatAssets.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarIconTag.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarPanel.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarPanelLoopWidget.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarLoops.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarSettings.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarSituation.cs" />
-    <Compile Include="UI\ToolbarUI\ToolbarStats.cs" />
-    <Compile Include="UI\Tooltips.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Remove="Modules\ModuleSystemHeatMultiJettison.cs" />
+    <None Include="Modules\ModuleSystemHeatMultiJettison.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Modules\ModuleSystemHeatAsteroidHarvester.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).dll" "$(SolutionDir)\..\GameData\SystemHeat\Plugin\SystemHeat.dll"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <Target Name="CopyExtrasToPluginFolder" AfterTargets="KSPBT_CopyDLLsToPluginFolder">
+    <ItemGroup>
+      <_ExtrasToCopy Include="$(TargetDir)/**/*.xml" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_ExtrasToCopy)" DestinationFolder="$(KSPBT_ModRoot)/$(KSPBT_ModPluginFolder)/%(RecursiveDir)" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
