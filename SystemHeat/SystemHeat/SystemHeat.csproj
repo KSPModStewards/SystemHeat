@@ -6,7 +6,7 @@
     <TargetFramework>net481</TargetFramework>
 
     <FileVersion>$(Version)</FileVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
 
     <Description>Heat handling system for Kerbal Space Program</Description>
