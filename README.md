@@ -6,7 +6,6 @@ A mod for Kerbal Space Program, intended to provide a better experience for heat
 * [Dependencies](#dependencies)
 * [Installation](#installation)
 * [Contributing](#contributing)
-* [License](#licensing)
 
 ## Features
 
@@ -37,12 +36,14 @@ Your job, as the spacecraft engineer, is to construct Heat Loops such that they 
 ## Dependencies
 
 ### Required
-These components are required for the mod to function and are bundled as part of any download:
+These components are required for the mod to function:
 * [ModuleManager (4.2.3)](https://github.com/sarbian/ModuleManager)
 * [Community Resource Pack (1.4.2)](https://github.com/BobPalmer/CommunityResourcePack)
 
 
 ## Installation
+
+Installation with [CKAN](https://github.com/KSP-CKAN/CKAN/wiki) is recommended.
 
 To install, place the GameData folder inside your Kerbal Space Program folder. If asked to overwrite files, please do so.
 
@@ -63,18 +64,7 @@ Please note that these extras may break your ships in flight as they will make e
 
 ## Contributing
 
-I certainly accept pull requests. Please target all such things to the `dev` branch though!
+SystemHeat uses [KSPBuildTools](https://kspbuildtools.readthedocs.io/en/stable/). Please read its documentation on how to specify your KSP install location in order to compile SystemHeat.
 
-## Licensing
+Pull requests are welcome. Make sure each pull request is limited to a single topic, bug, or feature and does not include unnecessary edits to project files etc.  Please include an update to the CHANGELOG.md file describing the change (and tag it with your own name if you would like).
 
-MIT license:
-
-Copyright (c) 2019 Chris Adderley
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-Module Manager is distributed under its own licence (CC-SA). Please find source code and more details at https://github.com/sarbian/ModuleManager
-
-The Community Resource pack by RoverDude is also distributed under its own license.

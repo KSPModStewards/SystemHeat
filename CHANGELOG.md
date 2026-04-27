@@ -1,27 +1,36 @@
-v0.8.2
-------
+## Unreleased
+
+- Fixed memory leaks from dangling event handlers.
+
+
+## v0.8.2
+
 - Fixed ungated debug loop strings
 
-v0.8.1
-------
+
+## v0.8.1
+
 - Fixed an issue which would cause the heat loop animation in the overlay not to play if there was a loop with only negative fluxes (#125)
 - Behavior of things based on stock Converter code (converters, drills, harvesters) should now be more consistent
 - Tweaked reporting of Fission Reactor power generation (related to DBS bug)
 - Added configurable HeatLoopDecayCoefficient to Settings.cfg
 
-v0.8.0
-------
+
+## v0.8.0
+
 - Updates to zn-ch localization
 - Corrected an issue where the heat simulation would not be reset when using the Hangar mod to launch ships. Note that if you are experiencing this you will need to re-save the ship in the editor 
 - Additional performance improvements and code cleanup
 - Added the ability for radiators to have their output scaled by atmosphere depth and/or acceleration
-   
-v0.7.5
-------
+
+
+## v0.7.5
+
 - Fixed a fission reactor related logging incident
 
-v0.7.4
-------
+
+## v0.7.4
+
 - Fixed a config oversight that made the heat exchanger always cost power no matter its settings
 - Fixed a relatively harmless NRE on editor scene loads
 - Fixed UI null reference spam when switching away from a vessel with SH modules in flight
@@ -33,23 +42,27 @@ v0.7.4
 -- Unnecesary SH modules for some NTRs
 -- Harvester patches now support Asteroid/Comet drills
 
-v0.7.3
-------
+
+## v0.7.3
+
 - Fixed an issue where static radiators would create exceptions in the editor
 - Allowed lower resource flow rates for fission reactors to work correctly and show in the UI
 - Situation checklist dropdown in the Toolbar UI now uses BodyDisplayName instead of internal name
 
-v0.7.2
-------
+
+## v0.7.2
+
 - Fixed the coolant tank being renamed for no particular reason (ghosts??)
 
-v0.7.1
-------
+
+## v0.7.1
+
 - Fixed a null reference exception when loading a vessel with no SystemHeat parts
 - Fixed an issue where a player could disable a tank in the UI, thus disabling boiloff
 
-v0.7.0
-------
+
+## v0.7.0
+
 - Updated ModuleManager to 4.2.3
 - Major UI update
 - Rebuilt the System Heat Panel 
@@ -85,8 +98,9 @@ v0.7.0
 - SystemHeatBoiloff: Improved the balance of cooling costs for various tanks (Wyzard256)
 - SystemHeatBoiloff: Fix deuterium FuelName in SystemHeatBoiloff patch [#110] (Wyzard256)
 
-v0.6.0
-------
+
+## v0.6.0
+
 - Most UI fields now report in SI-prefixed units for flux (W, kW, MW, etc). This is not (yet) true for all modules though. 
 - Added new functionality to cool fuel tanks with radiators and the SH system
 - Added optional patch to apply this to CryoTanks
@@ -99,28 +113,33 @@ v0.6.0
 - Support USI reactors
 - Fixes to universal harvester patch
 
-v0.5.6
-------
+
+## v0.5.6
+
 - Added action groups to ModuleSystemHeatExchanger for Enable, Disable, Toggle and Toggle Direction
 
-v0.5.5
-------
+
+## v0.5.5
+
 - Fixed a stupid problem
 
-v0.5.4
-------
+
+## v0.5.4
+
 - Introduced allowManualShutdownTemperatureControl field for fission reactors
 - Disabled shutdown temperature adjustment on non-trimodal NTRs
 - Tuned outlet/shutdown temperatures of NTRs to be more consistent internally and with FFT/NFE
 - Updated Chinese localization (TerrestrisYE)
 
-v0.5.3
-------
+
+## v0.5.3
+
 - Fixed ModuleFissionEngine displaying total heat instead of waste heat in part info
 - Changed display of temperatures in PAW - new 'Loop Temperatures' shows loop info, tuned the other fields
 
-v0.5.2
-------
+
+## v0.5.2
+
 - Updated ModuleManager to 4.2.1
 - Fixed NTR configs not removing stock heat generation from all engine mode
 - Ion engine configs now also remove all excess heat generation
@@ -128,12 +147,14 @@ v0.5.2
 - System Temperature PAW field is now hidden if system flux <= 0 kW as it is meaningless
 - Fixed loop integrator to handle cases with producers that are off better
 
-v0.5.1
-------
+
+## v0.5.1
+
 - Hotfix reactor configs
 
-v0.5.0
-------
+
+## v0.5.0
+
 - Marked for KSP 1.12
 - Removed nuclear fuel container inventory item as it no longer has a purpose
 - NTRs:
@@ -176,20 +197,22 @@ v0.5.0
  - Added SystemHeatIonEngines extra: adds heat generation from ion engines related to the engine's efficiency
 
 
-v0.4.3
-------
+## v0.4.3
+
 - Added CRP as a dependency as it is needed if using the Extras patches related to fission reactors/engines
 - FissionReactor and FissionEngine (if electrical generator) modules now fulfill electrical generation parameters of contracts
 
-v0.4.2
-------
+
+## v0.4.2
+
 - Fixed some typos in the SH implemenation of the fixed microchannel heat radiator from Heat Control's variants
 - Fixed issue where reactor throttle was not calculated correctly on multimodal nuclear engines
 - Isp is now pinned to exhaust vs reactor power, so is not lower at lower throttles. In principle this means that Isp is always maximized because reactor power response is very fast. 
 - Tweaked exhaust cooling on NTRs (more forgiving)
 
-v0.4.1
-------
+
+## v0.4.1
+
 - Fixed DebugSimulation being on by default
 - Fixed an issue where heat loops that had no producers could run into a divide by zero error, causing overheats
 - Heat loops will now cool down at a rate proportional to the difference between current and nominal temp if all systems on the loop are off
@@ -201,8 +224,9 @@ v0.4.1
 - Added an Exhaust cooling field that shows current exhaust cooling
 - Renamed Reactor Output field to Waste Heat to clarify that it's the heat you should worry about
 
-v0.4.0
-------
+
+## v0.4.0
+
 - Reorganized some UI elements
 - Added convection simulation to radiators
  - Convection can increase radiator efficiency in atmosphere
@@ -219,18 +243,20 @@ v0.4.0
 - Changes pass specifiers in Extras patches to conform to the Extra's name
 - Added support for Restock+ Cherenkov to NTR patches
 
-v0.3.10
--------
+## ## v0.3.10
+
 - Improvements to Russian localization form r4nd0m
 - Fix for stack of exceptions when radiators broke sometimes
 - Tweaked radiator thermal emission values to look less obnoxious in everyday operation
 
-v0.3.9
-------
+
+## v0.3.9
+
 - Hotfix fission reactor overheat on vessel launch
 
-v0.3.8
-------
+
+## v0.3.8
+
 - Fixed fission reactor manual control not respecting minimum reactor throttles
 - Fixed fission reactor catchup not adding waste to reactor and only consumingit
 - Fixed fission reactor power generation not being shown in DBS planning UI
@@ -244,23 +270,26 @@ v0.3.8
 - Fixed Horrible Things happening when switching vessels withing the same scene to one that has no SystemHeat parts and having the overlay open
 - Changed power displays from kW to Ec/s
 
-v0.3.7
-------
+
+## v0.3.7
+
 - Fixed a NRE on deletion of parts in the editor
 - Fixed scrolling of UI loop list
 - Fixed heat exchangers always showing as overheated in overlay
 - Fixed converter module not actually simulating heat in the VAB when set to simulate
 - Fixed more bugs in generic converter patch (PocketBrotector)
 
-v0.3.6
-------
+
+## v0.3.6
+
 - Fixed some debug settings being on by defauly
 - Implemented improved log levels, better handling for log messages overall
 - Fixed fission reactors now updadnig their electricity generation in the UI or in the NF systems manager when disabled
 - Generic converter patch now ignores converters that don't specify ConverterNames
 
-v0.3.5
-------
+
+## v0.3.5
+
 - Fixed an issue where the Overlay panels were not reporting radiator performance properly
 - Fixed an issue with fission reactors firing a harmless NRE on launch
 - Fixed an issue where loop temperature could trend below local space temperature sometimes
@@ -272,14 +301,16 @@ v0.3.5
 - Fixed missing storage container on Scylla
 - Tuned heat generation of NTR patches to be more aligned with FFT-style heat balance
 
-v0.3.4
-------
+
+## v0.3.4
+
 - Fixed fission reactors always starting at 50% health
 - Fixed uncooled fission reactors always instantly melting down during first load sequence
 - Fixed EVA kerbals storing all their carried fuel in containers when storing, no matter what capacity is remaining in the target container
 
-v0.3.3
-------
+
+## v0.3.3
+
 - Fixed fission reactor Manual mode showing both on and off buttons at game start
 - Fixed fission reactors still generating power/working when they were full of waste
 - Fixed fission reactors that didn't generate electricity not generating waste
@@ -287,43 +318,49 @@ v0.3.3
 - Added Hibernate On Warp control to fission reactors: if activated, an enabled reactor will turn off when the ship goes on rails. It will reactivate when the ship goes off rails. 
 - Fixed a bug in loop integration that could cause strange behaviour below norminal temperatures
 
-v0.3.2
-------
+
+## v0.3.2
+
 - Heat Control radiator names are now adjusted when installed to match their SystemHeat capacities
 - Couple of UI text fixes
 - Fixed Heat Exchanger PartInfo being blank
 - Fixed a couple of harmless but annoying NREs
 
-v0.3.1
-------
+
+## v0.3.1
+
 - Adjusted radiator masses (some errors before)
 - Tweaks to the Refuel system
 - Fixes to the Fission Engine patches
 
-v0.3.0
-------
+
+## v0.3.0
+
 - Pushed to KSP 1.11
 - Improved Repair feature for fission reactors: now requires EVA repair kits. More kits needed for larger reactors
 - Improved Refuel feature for fission reactors: now needs Kerbals to equip the Nuclear Fuel Container EVA part, and for them to collect fuel from containers to store in reactors
 - Added Nuclear fuel container cargo part for working with fission engines/reactors
 
-v0.2.3
-------
+
+## v0.2.3
+
 - Updates to Chinese localization (TerrestrisYE)
 - Fixed a number of changes from last update not actually being included :|
 - Added generic harvester, converter patches from toric5
 - Normalized drill thermal efficiencies
-- Hid heat sink part. 
+- Hid heat sink part.
 
-v0.2.2
-------
+
+## v0.2.2
+
 - Corrected NFE Nuclear Recycler Uranium Extractor patch not working
 - Fixed production ratios not working correctly overall
 - Changed systemPower key in ModuleSystemHeatHarvester and ModuleSystemHeatConverter to a float
 - Improved exception handling and debugging overall
 
-v0.2.0
-------
+
+## v0.2.0
+
 - Added Chinese localization (TerrestrisYE)
 - Added additional converter patches, including NF Electrical, NF Propulsion, CryoTanks (TerrestrisYE)
 - Halved the radiating capacity of all high temperature and microchannel radiators BUT halved their mass.
@@ -333,28 +370,32 @@ v0.2.0
 - Worked on normalizing PartInfo blocks for System Heat modules in terminology and look and feel
 - Increased the amount of coolant in the coolant tank part by 5x
 
-v0.1.5
-------
+
+## v0.1.5
+
 - Added manual control mode to Fission Reactors
 - Added Heat Control wraparound radiators to radiator patch
 - Added some background improvements to Converter and Harvester adapter modules
 - Fixed wrong target temperature for some radiators
 
-v0.1.4
-------
+
+## v0.1.4
+
 - Fixed Generation and Rejection values in the overlay being reversed
 - Fixed Reactor control panel on/off toggle firing events when on/off toggle in the PAW was fired
 - Localized ModuleSystemHeatHarvester and ModuleSystemHeatConverter
 
-v0.1.3
-------
+
+## v0.1.3
+
 - Worked on localization of things not previously localized (reactor panel, toolbar panel, ModuleHeatSink)
 - Added a UI button to charge fusion reactors in the reactor panel
 - Reactor/Heat toolbar buttons should now hide when looking at a vessel without reactors or heat modules
 - More random bugfixes
 
-v0.1.1
-------
+
+## v0.1.1
+
 - Fixed issue with map vector camera not being reset when entering map view (messing up orbit lines)
 - Fixed some issues with ModuleSystemHeatEngine contributing to loop max temperatures despite being off
 - Fixed global thermal scaling being set to 0.025x what was intended, causing UI confusion 
@@ -363,8 +404,8 @@ v0.1.1
 - Thermal summary in toolbar window now turns orange when a value is bad
 - Turned off PAW debug by default
 
-v0.1.0
-------
-- Initial version controlled release
-- 
 
+## v0.1.0
+
+
+## - Initial version controlled release
