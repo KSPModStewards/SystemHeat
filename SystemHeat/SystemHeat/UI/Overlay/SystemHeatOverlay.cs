@@ -65,9 +65,11 @@ namespace SystemHeat.UI
       GameEvents.onEditorPartDeleted.Remove(onEditorPartDeleted);
       GameEvents.onEditorPartPicked.Remove(onEditorPartPicked);
       GameEvents.onEditorRestart.Remove(onEditorReset);
+      GameEvents.onEditorLoad.Remove(onEditorLoad);
       GameEvents.onEditorStarted.Remove(onEditorStart);
       GameEvents.OnMapEntered.Remove(onEnterMapView);
       GameEvents.OnMapExited.Remove(onExitMapView);
+      Instance = null;
 
     }
     protected void Start()

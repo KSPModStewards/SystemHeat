@@ -46,6 +46,16 @@ namespace SystemHeat.UI
 
 
     }
+
+    void OnDestroy()
+    {
+      GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
+      GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
+      GameEvents.onGUIApplicationLauncherUnreadifying.Remove(OnGUIAppLauncherUnreadifying);
+      GameEvents.onVesselChange.Remove(OnVesselChanged);
+      Instance = null;
+    }
+
     protected void CreateToolbarPanel()
     {
       if (reactorPanel == null)

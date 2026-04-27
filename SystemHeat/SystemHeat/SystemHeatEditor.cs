@@ -38,6 +38,7 @@ namespace SystemHeat
     protected void OnDestroy()
     {
       RemoveEditorCallbacks();
+      Instance = null;
     }
     protected void FixedUpdate()
     {
@@ -79,7 +80,9 @@ namespace SystemHeat
       GameEvents.onEditorPodDeleted.Remove(onEditorVesselReset);
       GameEvents.onEditorPartDeleted.Remove(onEditorPartDeleted);
       GameEvents.onEditorLoad.Remove(onEditorVesselLoad);
-      GameEvents.onPartRemove.Remove(onEditorVesselPartRemoved);
+      GameEvents.onAboutToSaveShip.Remove(onEditorSave);
+
+	  GameEvents.onPartRemove.Remove(onEditorVesselPartRemoved);
       GameEvents.onEditorLoad.Remove(onEditorLoad);
     }
     protected void InitializeEditorConstruct(ShipConstruct ship, bool forceReset)
