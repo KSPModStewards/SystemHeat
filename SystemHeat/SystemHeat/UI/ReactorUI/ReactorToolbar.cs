@@ -47,15 +47,6 @@ namespace SystemHeat.UI
 
     }
 
-    void OnDestroy()
-    {
-      GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
-      GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
-      GameEvents.onGUIApplicationLauncherUnreadifying.Remove(OnGUIAppLauncherUnreadifying);
-      GameEvents.onVesselChange.Remove(OnVesselChanged);
-      Instance = null;
-    }
-
     protected void CreateToolbarPanel()
     {
       if (reactorPanel == null)
@@ -213,10 +204,11 @@ namespace SystemHeat.UI
         Utils.Log("[ReactorToolbar]: OnDestroy Fired");
 
       // Remove the stock toolbar button
-      GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherDestroyed);
       GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
+      GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
+      GameEvents.onGUIApplicationLauncherUnreadifying.Remove(OnGUIAppLauncherUnreadifying);
       GameEvents.onVesselChange.Remove(OnVesselChanged);
-
+      Instance = null;
       if (stockToolbarButton != null)
       {
         ApplicationLauncher.Instance.RemoveModApplication(stockToolbarButton);
