@@ -9,7 +9,8 @@ A mod for Kerbal Space Program, intended to provide a better experience for heat
 
 ## Features
 
-In a nutshell, this mod has as goals.
+In a nutshell, this mod's goals are:
+
 * Create a coherent vision for the system-level heat mechanics in KSP
 * Design a fairly simple but deep system built around designing ships to manage heat
 * Provide better tools and visualizations to help players with those designs
@@ -38,7 +39,6 @@ Your job, as the spacecraft engineer, is to construct Heat Loops such that they 
 ### Required
 These components are required for the mod to function:
 * [ModuleManager (4.2.3)](https://github.com/sarbian/ModuleManager)
-* [Community Resource Pack (1.4.2)](https://github.com/BobPalmer/CommunityResourcePack)
 
 
 ## Installation
@@ -60,6 +60,7 @@ Please note that these extras may break your ships in flight as they will make e
 * **SystemHeatFissionReactors**: Converts nuclear reactors to use SystemHeat
 * **SystemHeatFissionEngines**: When installed, nuclear engines will have integrated reactors
 * **SystemHeatCryoTanks**: When installed, tanks configured by CryoTanks will not use power and instead require cooling
+* **SystemHeatIonEngines**: Makes ion engines require cooling
 
 
 ## Contributing
