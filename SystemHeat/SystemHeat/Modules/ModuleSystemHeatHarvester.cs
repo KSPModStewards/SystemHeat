@@ -95,13 +95,19 @@ namespace SystemHeat
           GenerateHeatFlight();
           UpdateSystemHeatFlight();
         }
-        if (HighLogic.LoadedSceneIsEditor)
+        else if (HighLogic.LoadedSceneIsEditor)
         {
           GenerateHeatEditor();
 
           Fields["HarvesterEfficiency"].guiActiveEditor = editorThermalSim;
-
         }
+      }
+    }
+
+    void Update()
+    {
+      if (heatModule != null && part.PartActionWindow != null && part.PartActionWindow.isActiveAndEnabled)
+      {
         HarvesterEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency_Value", (systemEfficiency.Evaluate(heatModule.currentLoopTemperature) * 100f).ToString("F1"));
       }
     }
