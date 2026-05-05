@@ -37,5 +37,5 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: SystemHeat-${{env.MAJOR}}.${{env.MINOR}}.${{env.PATH}}
-          path: SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATH}}.zip
+          name: SystemHeat-${{env.MAJOR}}.${{env.MINOR}}.${{env.PATCH}}
+          path: SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip
