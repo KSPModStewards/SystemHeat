@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="CHANGELOG.md" />
+    <File Path="SystemHeat/SystemHeat/SystemHeat.csproj.user" />
+  </Folder>
   <Project Path="SystemHeat/SystemHeat/SystemHeat.csproj" />
 </Solution>
