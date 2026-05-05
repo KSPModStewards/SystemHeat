@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with:
-          name: SystemHeat-RELEASE
+          name: SystemHeat-Release
           path: SystemHeat
 
       - name: Extract Version
