@@ -399,6 +399,8 @@ namespace SystemHeat
 
     public void Update()
     {
+      bool pawIsOpen = part.PartActionWindow != null && part.PartActionWindow.isActiveAndEnabled;
+
       if (HighLogic.LoadedSceneIsFlight && HasAnyBoiloffResource)
       {
         /// Show the insulation status field if there is a cooling cost
@@ -414,6 +416,12 @@ namespace SystemHeat
             Events["Enable"].active = !CoolingEnabled;
           }
 
+          if (pawIsOpen && !CoolingEnabled)
+          {
+            BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
+            CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Disabled");
+          }
+
           heatModule.SetSystemHeatModuleEnabled(true);
         }
         else
@@ -422,12 +430,22 @@ namespace SystemHeat
           Events["Disable"].active = false;
           Events["Enable"].active = false;
 
+          if (pawIsOpen)
+          {
+            BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
+          }
+
           heatModule.SetSystemHeatModuleEnabled(false);
         }
 
         /// if there is no more fuel, hide the boiloff status
         if (fuelAmount == 0.0)
         {
+          if (pawIsOpen)
+          {
+            BoiloffStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_BoiloffStatus_NoFuel");
+            CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_NoFuel");
+          }
           Fields["BoiloffStatus"].guiActive = false;
           heatModule.SetSystemHeatModuleEnabled(false);
         }
@@ -498,8 +516,6 @@ namespace SystemHeat
         // If we have no fuel, no need to do any calculations
         if (fuelAmount == 0.0)
         {
-          BoiloffStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_BoiloffStatus_NoFuel");
-          CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_NoFuel");
           currentCoolingHeatCost = 0.0;
           ClearHeat();
           return;
@@ -510,7 +526,6 @@ namespace SystemHeat
         if (!IsCoolable())
         {
           BoiloffOccuring = true;
-          BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
           currentCoolingHeatCost = 0.0;
           ClearHeat();
         }
@@ -520,8 +535,6 @@ namespace SystemHeat
           if (!CoolingEnabled)
           {
             BoiloffOccuring = true;
-            BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
-            CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Disabled");
             currentCoolingHeatCost = 0.0;
             ClearHeat();
           }
