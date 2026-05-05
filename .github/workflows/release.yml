@@ -10,3 +10,32 @@ on:
 jobs:
   build:
     uses: KSPModdingLibs/KSPBuildTools/.github/workflows/build.yml@1.1.1
+    with:
+      artifacts:
+        GameData Extras LICENSE* README* CHANGELOG*
+
+  assemble-release-asset:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: SystemHeat-RELEASE
+          path: SystemHeat
+
+      - name: Extract Version
+        run:
+          export VFILE=SystemHeat/GameData/SystemHeat/Versioning/SystemHeat.version
+          echo "MAJOR=$(cat $VFILE | jq -r .VERSION.MAJOR)" >> "$GITHUB_ENV"
+          echo "MINOR=$(cat $VFILE | jq -r .VERSION.MINOR)" >> "$GITHUB_ENV"
+          echo "PATCH=$(cat $VFILE | jq -r .VERSION.PATCH)" >> "$GITHUB_ENV"
+
+      - name: Build Release Zip
+        run:
+          cd SystemHeat
+          zip -r '../SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' *
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: SystemHeat-${{env.MAJOR}}.${{env.MINOR}}.${{env.PATH}}
+          path: SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATH}}.zip
