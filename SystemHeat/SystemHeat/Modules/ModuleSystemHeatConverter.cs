@@ -104,16 +104,27 @@ namespace SystemHeat
         {
           GenerateHeatFlight();
           UpdateSystemHeatFlight();
-
-          Fields["ConverterEfficiency"].guiActive = base.ModuleIsActive();
         }
-        if (HighLogic.LoadedSceneIsEditor)
+        else if (HighLogic.LoadedSceneIsEditor)
         {
           GenerateHeatEditor();
-
-          Fields["ConverterEfficiency"].guiActiveEditor = editorThermalSim;
-
         }
+      }
+    }
+
+    void Update()
+    {
+      if (HighLogic.LoadedSceneIsFlight)
+      {
+        Fields["ConverterEfficiency"].guiActive = base.ModuleIsActive();
+      }
+      if (HighLogic.LoadedSceneIsEditor)
+      {
+        Fields["ConverterEfficiency"].guiActiveEditor = editorThermalSim;
+      }
+
+      if (part.PartActionWindow != null && part.PartActionWindow.isActiveAndEnabled)
+      {
         ConverterEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatConverter_Field_Efficiency_Value", (systemEfficiency.Evaluate(heatModule.currentLoopTemperature) * 100f).ToString("F1"));
       }
     }
