@@ -110,7 +110,8 @@ namespace SystemHeat
     private double fluxScale = 1.0;
 
     protected ModuleSystemHeat heatModule;
-    protected PartModule jettisonModule;
+    protected BaseField jettisonField;
+
     protected bool isJettisoned = false;
     // UI FIELDS/ BUTTONS
     // Status string
@@ -231,10 +232,13 @@ namespace SystemHeat
 
       heatModule = ModuleUtils.FindHeatModule(this.part, systemHeatModuleID);
 
-      jettisonModule = part.Modules.GetModule("ModuleBdbJettison");
+      var jettisonModule = part.Modules.GetModule("ModuleBdbJettison");
 
       if (jettisonModule != null)
+      {
+        jettisonField = jettisonModule.Fields["isJettisoned"];
         Utils.Log($"Found {jettisonModule.GUIName} on {part.partInfo.title}");
+      }
 
       if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
       {
@@ -484,7 +488,7 @@ namespace SystemHeat
 
       if (HighLogic.LoadedSceneIsFlight && HasAnyBoiloffResource)
       {
-        if (jettisonModule != null && bool.Parse(jettisonModule.Fields.GetValue("isJettisoned").ToString()))
+        if (jettisonField != null && jettisonField.GetValue<bool>(jettisonField.host))
           isJettisoned = true;
         else
           isJettisoned = false;
@@ -547,7 +551,7 @@ namespace SystemHeat
       }
       if (HighLogic.LoadedSceneIsEditor && HasAnyBoiloffResource)
       {
-        if (jettisonModule != null && bool.Parse(jettisonModule.Fields.GetValue("isJettisoned").ToString()))
+        if (jettisonField != null && jettisonField.GetValue<bool>(jettisonField.host))
           isJettisoned = true;
         else
           isJettisoned = false;
