@@ -14,7 +14,7 @@ jobs:
       artifacts:
         GameData Extras LICENSE* README* CHANGELOG*
 
-  assemble-release-asset:
+  assemble-release-assets:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -39,3 +39,8 @@ jobs:
         with:
           name: SystemHeat-${{env.MAJOR}}.${{env.MINOR}}.${{env.PATCH}}
           path: SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: SystemHeat.version
+          path: SystemHeat/GameData/SystemHeat/Versioning/SystemHeat.version
