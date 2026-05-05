@@ -33,7 +33,7 @@ jobs:
       - name: Build Release Zip
         run: |
           cd SystemHeat
-          zip -r '../SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' *
+          zip -9 -r '../SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' *
 
       - uses: actions/upload-artifact@v7
         with:
