@@ -24,14 +24,14 @@ jobs:
           path: SystemHeat
 
       - name: Extract Version
-        run:
+        run: |
           export VFILE=SystemHeat/GameData/SystemHeat/Versioning/SystemHeat.version
-          echo "MAJOR=$(cat $VFILE | jq -r .VERSION.MAJOR)" >> "$GITHUB_ENV"
-          echo "MINOR=$(cat $VFILE | jq -r .VERSION.MINOR)" >> "$GITHUB_ENV"
-          echo "PATCH=$(cat $VFILE | jq -r .VERSION.PATCH)" >> "$GITHUB_ENV"
+          echo "MAJOR=$(cat "$VFILE" | jq -r .VERSION.MAJOR)" >> "$GITHUB_ENV"
+          echo "MINOR=$(cat "$VFILE" | jq -r .VERSION.MINOR)" >> "$GITHUB_ENV"
+          echo "PATCH=$(cat "$VFILE" | jq -r .VERSION.PATCH)" >> "$GITHUB_ENV"
 
       - name: Build Release Zip
-        run:
+        run: |
           cd SystemHeat
           zip -r '../SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' *
 
