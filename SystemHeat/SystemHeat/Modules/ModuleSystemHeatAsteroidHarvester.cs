@@ -84,6 +84,13 @@ namespace SystemHeat
         {
           GenerateHeatEditor();
         }
+      }
+    }
+
+    void Update()
+    {
+      if (heatModule != null && part.IsPAWVisible())
+      {
         HarvesterEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency_Value", (systemEfficiency.Evaluate(heatModule.currentLoopTemperature) * 100f).ToString("F1"));
       }
     }
