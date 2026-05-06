@@ -117,6 +117,15 @@ namespace SystemHeat
     protected ModuleSystemHeat heatModule;
     protected ModuleSystemHeatColorAnimator scalarModule;
 
+    private float lastTemperatureCurveTemperature;
+
+    public override void OnLoad(ConfigNode node)
+    {
+      base.OnLoad(node);
+
+      lastTemperatureCurveTemperature = temperatureCurve.Curve[temperatureCurve.Curve.length - 1].time;
+    }
+
     public override void Start()
     {
       base.Start();
@@ -173,10 +182,10 @@ namespace SystemHeat
 
       string message = Localizer.Format(
         "#LOC_SystemHeat_ModuleSystemHeatRadiator_PartInfo",
-        Utils.ToSI(temperatureCurve.Curve.keys[0].time, "F0"),
-        temperatureCurve.Evaluate(temperatureCurve.Curve.keys[0].time).ToString("F0"),
-        Utils.ToSI(temperatureCurve.Evaluate(temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time), "F0"),
-        temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time.ToString("F0")
+        Utils.ToSI(temperatureCurve.Curve[0].time, "F0"),
+        temperatureCurve.Evaluate(temperatureCurve.Curve[0].time).ToString("F0"),
+        Utils.ToSI(temperatureCurve.Evaluate(lastTemperatureCurveTemperature), "F0"),
+        lastTemperatureCurveTemperature.ToString("F0")
         );
       if (affectedByAtmosphere)
       {
@@ -223,8 +232,7 @@ namespace SystemHeat
               HeatLoop lp = heatModule.Loop;
               if (lp != null)
               {
-                float tDelta = lp.ConvectionTemperature - Mathf.Clamp(heatModule.LoopTemperature,
-              (float)PhysicsGlobals.SpaceTemperature, temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time);
+                float tDelta = lp.ConvectionTemperature - Mathf.Clamp(heatModule.LoopTemperature, (float)PhysicsGlobals.SpaceTemperature, lastTemperatureCurveTemperature);
 
                 convectiveFlux = Mathf.Clamp(
                    tDelta * heatModule.Loop.ConvectionFlux * (float)part.heatConvectiveConstant * convectiveArea * 0.5f * densityScale,
@@ -266,7 +274,7 @@ namespace SystemHeat
               float tDelta = lp.ConvectionTemperature - Mathf.Clamp(
                 heatModule.LoopTemperature,
                 (float)PhysicsGlobals.SpaceTemperature,
-                temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time);
+                lastTemperatureCurveTemperature);
 
               convectiveFlux = Mathf.Clamp(
                  tDelta * heatModule.Loop.ConvectionFlux * (float)part.heatConvectiveConstant * convectiveArea * 0.5f,
@@ -309,7 +317,7 @@ namespace SystemHeat
           }
 
           RadiatorEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatRadiator_RadiatorEfficiency_Running",
-            (-radiativeFlux / temperatureCurve.Evaluate(temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time) * 100f).ToString("F0"));
+            (-radiativeFlux / temperatureCurve.Evaluate(lastTemperatureCurveTemperature) * 100f).ToString("F0"));
           RadiatorStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatRadiator_RadiatorStatus_Running",
             Utils.ToSI(radiativeFlux, "F0"));
         }
@@ -333,7 +341,7 @@ namespace SystemHeat
         ConvectionStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatRadiator_ConvectionStatus_Running",
           Utils.ToSI(convectiveFlux, "F0"));
         RadiatorEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatRadiator_RadiatorEfficiency_Running",
-          ((temperatureCurve.Evaluate(heatModule.LoopTemperature) / temperatureCurve.Evaluate(temperatureCurve.Curve.keys[temperatureCurve.Curve.keys.Length - 1].time)) * 100f).ToString("F0"));
+          ((temperatureCurve.Evaluate(heatModule.LoopTemperature) / temperatureCurve.Evaluate(lastTemperatureCurveTemperature)) * 100f).ToString("F0"));
       }
     }
 
