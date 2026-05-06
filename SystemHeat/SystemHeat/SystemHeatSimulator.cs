@@ -258,7 +258,11 @@ namespace SystemHeat
     {
       if (HeatLoops != null)
       {
-        return HeatLoops.Find(x => x.ID == id);
+        foreach (HeatLoop loop in HeatLoops)
+        {
+          if (loop.ID == id)
+            return loop;
+        }
       }
       return null;
     }
