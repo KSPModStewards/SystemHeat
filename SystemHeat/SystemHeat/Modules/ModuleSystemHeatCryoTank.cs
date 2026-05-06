@@ -399,7 +399,7 @@ namespace SystemHeat
 
     public void Update()
     {
-      bool pawIsOpen = part.PartActionWindow != null && part.PartActionWindow.isActiveAndEnabled;
+      bool pawIsOpen = part.IsPAWVisible();
 
       if (HighLogic.LoadedSceneIsFlight && HasAnyBoiloffResource)
       {

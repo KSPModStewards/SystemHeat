@@ -123,7 +123,7 @@ namespace SystemHeat
         Fields["ConverterEfficiency"].guiActiveEditor = editorThermalSim;
       }
 
-      if (part.PartActionWindow != null && part.PartActionWindow.isActiveAndEnabled)
+      if (part.IsPAWVisible())
       {
         ConverterEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatConverter_Field_Efficiency_Value", (systemEfficiency.Evaluate(heatModule.currentLoopTemperature) * 100f).ToString("F1"));
       }
