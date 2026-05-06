@@ -409,17 +409,32 @@ namespace SystemHeat
           Fields["CoolingStatus"].guiActive = true;
           Fields["BoiloffStatus"].guiActive = true;
 
-
           if (Events["Enable"].active == CoolingEnabled || Events["Disable"].active != CoolingEnabled)
           {
             Events["Disable"].active = CoolingEnabled;
             Events["Enable"].active = !CoolingEnabled;
           }
 
-          if (pawIsOpen && !CoolingEnabled)
+          if (pawIsOpen)
           {
-            BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
-            CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Disabled");
+            if (CoolingEnabled)
+            {
+              if (heatModule.LoopTemperature <= GetMaxSourceTemperature())
+              {
+                BoiloffStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_BoiloffStatus_Insulated");
+                CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Cooling", finalCoolingHeatCost.ToString("F2"));
+              }
+              else
+              {
+                BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
+                CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Uncooled");
+              }
+            }
+            else
+            {
+              BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
+              CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Disabled");
+            }
           }
 
           heatModule.SetSystemHeatModuleEnabled(true);
@@ -672,28 +687,15 @@ namespace SystemHeat
       bool boiloff = false;
       if (CoolingEnabled && IsCoolable())
       {
-
         if (isJettisoned)
           heatModule.AddFlux(moduleID, GetSourceTemperature(), (float)(finalCoolingHeatCost * JettisonCoolingScale), true);
         else
           heatModule.AddFlux(moduleID, GetSourceTemperature(), (float)finalCoolingHeatCost, true);
 
-        if (heatModule.LoopTemperature <= GetMaxSourceTemperature())
-        {
-          boiloff = false;
-          BoiloffStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_BoiloffStatus_Insulated");
-          CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Cooling", finalCoolingHeatCost.ToString("F2"));
-        }
-        else
-        {
-          boiloff = true;
-          BoiloffStatus = FormatRate(GetTotalBoiloffRate() * fuelAmount * fluxScale);
-          CoolingStatus = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatCryoTank_Field_CoolingStatus_Uncooled");
-        }
+        boiloff = heatModule.LoopTemperature > GetMaxSourceTemperature();
       }
       return boiloff;
     }
-
 
     /// <summary>
     /// Iteractes through the fuels and applies boiloff
