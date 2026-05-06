@@ -264,9 +264,22 @@ namespace SystemHeat
           temperatures[id] = 0f;
         }
 
-        totalSystemFlux = fluxes.Sum(x => x.Value) * (float)(PhysicsGlobals.InternalHeatProductionFactor / 0.025d);
-        totalSystemTemperature = temperatures.Sum(x => x.Value);
-        float denom = (temperatures.Values.ToList().Where(x => x > 0f).Count());
+        totalSystemFlux = 0;
+        foreach (var f in fluxes.Values)
+        {
+          totalSystemFlux += f;
+        }
+        totalSystemFlux *= (float)(PhysicsGlobals.InternalHeatProductionFactor / 0.025d);
+        totalSystemTemperature = 0;
+        float denom = 0;
+        foreach (var temp in temperatures.Values)
+        {
+          if (temp > 0f)
+          {
+            totalSystemTemperature += temp;
+            denom++;
+          }
+        }
 
         if (denom > 0)
           systemNominalTemperature = totalSystemTemperature / denom;
