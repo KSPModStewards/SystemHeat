@@ -107,6 +107,7 @@ namespace SystemHeat
     {
       Volume += heatModule.volume;
       modules.Add(heatModule);
+      modules.Sort(CompareModuleSystemHeatPriority);
       heatModule.coolantName = CoolantName;
       // Recalculate the nominal temperature
       NominalTemperature = CalculateNominalTemperature();
@@ -131,8 +132,9 @@ namespace SystemHeat
       Temperature = GetEnvironmentTemperature();
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          modules[i].currentLoopTemperature = GetEnvironmentTemperature();
+        var module = modules[i];
+        if (module.moduleUsed)
+          module.currentLoopTemperature = GetEnvironmentTemperature();
       }
     }
 
@@ -176,8 +178,9 @@ namespace SystemHeat
       float currentNetFlux = 0f;
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          currentNetFlux += modules[i].totalSystemFlux;
+        var module = modules[i];
+        if (module.moduleUsed)
+          currentNetFlux += module.totalSystemFlux;
       }
       return currentNetFlux;
     }
@@ -190,8 +193,9 @@ namespace SystemHeat
       float currentPosFlux = 0f;
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          currentPosFlux = modules[i].totalSystemFlux > 0 ? modules[i].totalSystemFlux + currentPosFlux : currentPosFlux;
+        var module = modules[i];
+        if (module.moduleUsed)
+          currentPosFlux = module.totalSystemFlux > 0 ? module.totalSystemFlux + currentPosFlux : currentPosFlux;
       }
       return currentPosFlux;
     }
@@ -203,8 +207,9 @@ namespace SystemHeat
       float currentNegFlux = 0f;
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          currentNegFlux = modules[i].totalSystemFlux < 0 ? modules[i].totalSystemFlux + currentNegFlux : currentNegFlux;
+        var module = modules[i];
+        if (module.moduleUsed)
+          currentNegFlux = module.totalSystemFlux < 0 ? module.totalSystemFlux + currentNegFlux : currentNegFlux;
       }
       return currentNegFlux;
     }
@@ -280,35 +285,44 @@ namespace SystemHeat
       // Propagate to all modules
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          modules[i].UpdateSimulationValues(NominalTemperature, Temperature, NetFlux);
+        var module = modules[i];
+        if (module.moduleUsed)
+          module.UpdateSimulationValues(NominalTemperature, Temperature, NetFlux);
       }
     }
+
+    static int CompareModuleSystemHeatPriority(ModuleSystemHeat a, ModuleSystemHeat b)
+    {
+      return b.priority - a.priority;
+    }
+
     protected void AllocateFlux(float totalFlux)
     {
       // Get all consuming systems
-      List<ModuleSystemHeat> orderedConsumers = modules.Where(x => x.totalSystemFlux < 0f).OrderByDescending(x => x.priority).ToList();
-      for (int i = 0; i < orderedConsumers.Count; i++)
+      for (int i = 0; i < modules.Count; i++)
       {
+        var module = modules[i];
+        if (module.totalSystemFlux >= 0) continue;
+
         if (totalFlux <= 0f)
         {
-          orderedConsumers[i].consumedSystemFlux = 0f;
+          module.consumedSystemFlux = 0f;
         }
         else
         {
-          if (totalFlux + orderedConsumers[i].totalSystemFlux > 0f)
+          if (totalFlux + module.totalSystemFlux > 0f)
           {
-            totalFlux += orderedConsumers[i].totalSystemFlux;
-            orderedConsumers[i].consumedSystemFlux = orderedConsumers[i].totalSystemFlux;
+            totalFlux += module.totalSystemFlux;
+            module.consumedSystemFlux = module.totalSystemFlux;
           }
-          else if (totalFlux + orderedConsumers[i].totalSystemFlux == 0f)
+          else if (totalFlux + module.totalSystemFlux == 0f)
           {
-            orderedConsumers[i].consumedSystemFlux = 0f;
+            module.consumedSystemFlux = 0f;
             totalFlux = 0f;
           }
           else //(totalFlux + orderedConsumers[i].totalSystemFlux < 0f)
           {
-            orderedConsumers[i].consumedSystemFlux = -totalFlux;
+            module.consumedSystemFlux = -totalFlux;
             totalFlux = 0f;
           }
         }
@@ -359,8 +373,9 @@ namespace SystemHeat
       float total = 0f;
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
-          total += modules[i].volume;
+        var module = modules[i];
+        if (module.moduleUsed)
+          total += module.volume;
       }
       return total;
     }
@@ -375,10 +390,11 @@ namespace SystemHeat
 
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed && !modules[i].ignoreTemperature && modules[i].volume >= 0f && modules[i].totalSystemFlux >= 0f)
+        var module = modules[i];
+        if (module.moduleUsed && !module.ignoreTemperature && module.volume >= 0f && module.totalSystemFlux >= 0f)
         {
-          temp += modules[i].systemNominalTemperature * modules[i].volume;
-          totalVolume += modules[i].volume;
+          temp += module.systemNominalTemperature * module.volume;
+          totalVolume += module.volume;
         }
       }
       // In the case of no volume loops, the nominal temperature is just the environment
@@ -393,7 +409,8 @@ namespace SystemHeat
       int count = 0;
       for (int i = 0; i < modules.Count; i++)
       {
-        if (modules[i].moduleUsed)
+        var module = modules[i];
+        if (module.moduleUsed)
         {
           count++;
         }
