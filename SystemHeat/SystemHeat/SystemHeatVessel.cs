@@ -51,6 +51,11 @@ namespace SystemHeat
       GameEvents.onVesselChange.Remove(OnVesselChanged);
     }
 
+    public override Activation GetActivation()
+    {
+      return Activation.LoadedVessels | Activation.FlightScene;
+    }
+
     void FixedUpdate()
     {
       // Handle collecting data and resetting the vessel
