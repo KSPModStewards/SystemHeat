@@ -330,10 +330,13 @@ namespace SystemHeat
         if (inputs[i].ResourceName == FuelName)
           baseRate = inputs[i].Ratio;
       }
-      return
-          Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatFissionReactor_PartInfo",
+      var resourceDef = PartResourceLibrary.Instance.GetDefinition(FuelName);
+      var resource = resourceDef == null ? null : this.part.Resources.Get(resourceDef.id);
+      double amount = resource == null ? 0.0 : resource.amount;
+
+      return Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatFissionReactor_PartInfo",
           ElectricalGeneration.Evaluate(100f).ToString("F0"),
-          FindTimeRemaining(this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition(FuelName).id).amount, baseRate),
+          FindTimeRemaining(amount, baseRate),
           Utils.ToSI((HeatGeneration.Evaluate(100f) - ElectricalGeneration.Evaluate(100f)), "F0"),
           NominalTemperature.ToString("F0"),
           NominalTemperature.ToString("F0"),
@@ -555,6 +558,11 @@ namespace SystemHeat
       {
         ResourceRatio p = new ResourceRatio();
         p.Load(inNodes[i]);
+        if (p.ResourceName == null)
+        {
+          Utils.LogError($"[ModuleSystemHeatFissionReactor] Error loading input resource node: ResourceName is null");
+          continue;
+        }
         inputs.Add(p);
       }
       ConfigNode[] outNodes = node.GetNodes("OUTPUT_RESOURCE");
@@ -564,9 +572,13 @@ namespace SystemHeat
       {
         ResourceRatio p = new ResourceRatio();
         p.Load(outNodes[i]);
+        if (p.ResourceName == null)
+        {
+          Utils.LogError($"[ModuleSystemHeatFissionReactor] Error loading output resource node: ResourceName is null");
+          continue;
+        }
         outputs.Add(p);
       }
-
     }
 
     public void Update()
