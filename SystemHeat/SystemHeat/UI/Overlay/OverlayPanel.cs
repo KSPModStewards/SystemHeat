@@ -206,16 +206,6 @@ namespace SystemHeat.UI
     {
       loop = lp;
       heatModule = sh;
-      Transform xform;
-      if (heatModule != null && heatModule.part != null)
-      {
-        xform = transform.FindDeepChild(heatModule.iconName);
-
-        if (xform != null)
-        {
-          systemIcon.sprite = xform.GetComponent<Image>().sprite;
-        }
-      }
 
       colorRing.color = SystemHeatSettings.GetLoopColor(loop.ID);
 
