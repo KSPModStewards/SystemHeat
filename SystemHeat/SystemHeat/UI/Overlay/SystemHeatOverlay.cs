@@ -205,7 +205,7 @@ namespace SystemHeat.UI
           Utils.Log(String.Format("[SystemHeatOverlay]: No loops, destroying overlay"), LogType.Overlay);
           DestroyOverlay();
         }
-        if (simulator.HeatLoops != null)
+        if (simulator.HeatLoops != null && Drawn)
         {
           // Update each loop, build a new loop when needed
           foreach (HeatLoop loop in simulator.HeatLoops)
@@ -320,13 +320,16 @@ namespace SystemHeat.UI
     {
       Utils.Log(String.Format("[SystemHeatOverlay]: Visibility set to {0}", visible), LogType.Overlay);
 
+      Drawn = visible;
+
       SetLoopVisiblity(visible);
       SetPanelVisiblity(visible);
-
     }
     public void SetVisible(bool visible, int loopID)
     {
       Utils.Log(String.Format("[SystemHeatOverlay]: Visibility of loop {0} set to {1}", loopID, visible), LogType.Overlay);
+
+      Drawn = visible;
 
       SetLoopVisiblity(visible, loopID);
       SetPanelVisiblity(visible, loopID);
@@ -351,12 +354,17 @@ namespace SystemHeat.UI
 
       for (int i = 0; i < overlayPanels.Count; i++)
       {
-        if (overlayPanels[i] != null && overlayPanels[i].loop.ID == loopID)
+        if (overlayPanels[i] == null) continue;
+        if (overlayPanels[i].loop.ID == loopID)
         {
           if (overlayPanels[i].heatModule.moduleUsed)
             overlayPanels[i].SetVisibility(visible);
           else
             overlayPanels[i].SetVisibility(false);
+        }
+        else
+        {
+          Drawn = Drawn || overlayPanels[i].active;
         }
       }
     }
@@ -386,6 +394,8 @@ namespace SystemHeat.UI
         {
           if (loop.heatLoop.ID == loopID)
             loop.SetVisible(visible);
+          else
+            Drawn = Drawn || loop.Drawn;
         }
       }
       else
