@@ -229,8 +229,8 @@ namespace SystemHeat
       NegativeFlux = CalculateNegativeFlux();
       float absFlux = Mathf.Abs(currentNetFlux);
 
-      AllocateFlux(PositiveFlux);
       NetFlux = currentNetFlux;
+      float oldTemperature = Temperature;
 
       // Determine the ideal change in temperature
       float deltaTemperatureIdeal = NetFlux * 1000f / (Volume * CoolantType.Density * CoolantType.HeatCapacity) * simTimeStep;
@@ -281,6 +281,15 @@ namespace SystemHeat
         }
       }
 
+      // How much temperature have we lost in this step?
+      var tempLoss = Mathf.Max(oldTemperature - Temperature, 0f);
+      // ... and how much energy did that take?
+      var energyLoss = tempLoss * 0.001f * Volume * CoolantType.Density * CoolantType.HeatCapacity;
+      // Now if we spread that out over the time step how how much extra flux do we get?
+      var lossFlux = energyLoss / simTimeStep;
+
+      AllocateFlux(PositiveFlux + lossFlux);
+
       // Ensure temperature doesn't go super high or low when the KSP environment gets weird (scene transitions)
       Temperature = Mathf.Clamp(Temperature, GetEnvironmentTemperature(), float.MaxValue);
       // Propagate to all modules
@@ -299,39 +308,20 @@ namespace SystemHeat
 
     protected void AllocateFlux(float totalFlux)
     {
-      // Get all consuming systems
       for (int i = 0; i < modules.Count; i++)
       {
-        var module = modules[i];
-        if (module.totalSystemFlux >= 0) continue;
+        var consumer = modules[i];
+        if (consumer.totalSystemFlux >= 0f) continue;
 
-        if (totalFlux <= 0f)
-        {
-          module.consumedSystemFlux = 0f;
-        }
-        else
-        {
-          if (totalFlux + module.totalSystemFlux > 0f)
-          {
-            totalFlux += module.totalSystemFlux;
-            module.consumedSystemFlux = module.totalSystemFlux;
-          }
-          else if (totalFlux + module.totalSystemFlux == 0f)
-          {
-            module.consumedSystemFlux = 0f;
-            totalFlux = 0f;
-          }
-          else //(totalFlux + orderedConsumers[i].totalSystemFlux < 0f)
-          {
-            module.consumedSystemFlux = -totalFlux;
-            totalFlux = 0f;
-          }
-        }
+        var systemFlux = -consumer.totalSystemFlux;
+        if (totalFlux < systemFlux)
+          systemFlux = totalFlux;
 
+        totalFlux -= systemFlux;
+        consumer.consumedSystemFlux = -systemFlux;
       }
-
-
     }
+
     void SimulateConvection(float simTimeStep)
     {
      
