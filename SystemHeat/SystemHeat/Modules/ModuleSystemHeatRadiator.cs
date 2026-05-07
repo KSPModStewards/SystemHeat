@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using KSP.Localization;
+using Unity.Profiling;
 
 namespace SystemHeat
 {
@@ -207,9 +208,13 @@ namespace SystemHeat
       return message;
     }
 
+    static ProfilerMarker x_BaseFixedUpdateMarker = new ProfilerMarker("base.FixedUpdate");
+
     public override void FixedUpdate()
     {
+      x_BaseFixedUpdateMarker.Begin();
       base.FixedUpdate();
+      x_BaseFixedUpdateMarker.End();
 
       if (heatModule != null)
       {

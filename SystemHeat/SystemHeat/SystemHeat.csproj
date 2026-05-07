@@ -20,6 +20,8 @@
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
+    <Configurations>Debug;Release;Profiling</Configurations>
+    <DefineConstants Condition="'$(Configuration)'=='Profiling'">$(DefineConstants);ENABLE_PROFILER</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

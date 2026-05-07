@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using KSP.Localization;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace SystemHeat
@@ -238,6 +239,9 @@ namespace SystemHeat
         simulator.ChangeLoopID((int)oldFieldValueObj, newID);
       }
     }
+
+    static ProfilerMarker x_AddFluxMarker = new ProfilerMarker("ModuleSystemHeat.AddFlux");
+
     /// <summary>
     /// Add heat flux at a given temperature to system
     /// </summary>
@@ -250,6 +254,7 @@ namespace SystemHeat
     /// </param>
     public void AddFlux(string id, float sourceTemperature, float flux, bool useForNominal)
     {
+      x_AddFluxMarker.Begin();
 
       if (fluxes != null && temperatures != null)
       {
@@ -297,6 +302,8 @@ namespace SystemHeat
           ignoreTemperature = false;
         }
       }
+
+      x_AddFluxMarker.End();
     }
 
     public float GetFlux(string id)
