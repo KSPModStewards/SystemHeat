@@ -35,7 +35,7 @@ namespace SystemHeat
     [GameParameters.CustomFloatParameterUI("MinimumRepairableLevel",
       title = "#LOC_SystemHeat_Settings_MinimumRepair_Title",
       maxValue = 1f, minValue = 0.05f, asPercentage = true, stepCount = 20,
-      toolTip = "#LOC_SystemHeat_Settings_MinimumRepair_Tooltip ", autoPersistance = true)]
+      toolTip = "#LOC_SystemHeat_Settings_MinimumRepair_Tooltip", autoPersistance = true)]
     public float repairThreshold = 0.10f;
 
 
