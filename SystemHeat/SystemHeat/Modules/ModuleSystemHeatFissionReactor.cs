@@ -550,7 +550,7 @@ namespace SystemHeat
       base.OnLoad(node);
 
 
-      /// Load resource nodes
+      // Load resource nodes
       ConfigNode[] inNodes = node.GetNodes("INPUT_RESOURCE");
 
       inputs = new List<ResourceRatio>();

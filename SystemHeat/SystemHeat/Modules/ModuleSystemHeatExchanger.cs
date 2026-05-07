@@ -219,7 +219,7 @@ namespace SystemHeat
         Fields["PowerStatus"].guiActive = true;
         Fields["PowerStatus"].guiActiveEditor = true;
 
-        /// Different PAW logic in editor
+        // Different PAW logic in editor
         if (HighLogic.LoadedSceneIsEditor)
         {
           if (loopTransferPossible)
@@ -321,7 +321,7 @@ namespace SystemHeat
         outletTemperature = Mathf.Clamp(sourceModule.nominalLoopTemperature + OutletAdjustement, 0f, float.MaxValue);
         outputHeat = Mathf.Min(-sourceModule.consumedSystemFlux, HeatRate) + temperatureDeltaHeatCurve.Evaluate(OutletAdjustement); ;
 
-        /// Calculate a power cost from that change in temperature desired and the heat flow rate
+        // Calculate a power cost from that change in temperature desired and the heat flow rate
         float powerCost = temperatureDeltaCostCurve.Evaluate(OutletAdjustement) + heatFlowCostCurve.Evaluate(HeatRate);
 
         double amt = this.part.RequestResource(PartResourceLibrary.ElectricityHashcode, powerCost * TimeWarp.fixedDeltaTime, ResourceFlowMode.ALL_VESSEL);

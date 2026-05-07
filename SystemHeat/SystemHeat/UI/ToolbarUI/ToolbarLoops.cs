@@ -157,7 +157,7 @@ namespace SystemHeat.UI
       {
         float topY = Mathf.Min(loopPanelMaxHeight + buttonYOffsetFromTop + widgetTotalHeight / 2f, loopPanelMaxHeight);
         Utils.Log($"Setting scroll viewport rect position anchors to {new Vector2(0, topY) }");
-        /// there will be no scrolling, set the position of the scroll rect to the top and have fun
+        // there will be no scrolling, set the position of the scroll rect to the top and have fun
         loopPanelScrollViewportRect.anchoredPosition = new Vector2(0, topY);
         loopPanelScrollViewportRect.sizeDelta = new Vector2(0, widgetTotalHeight);
         loopPanelScrollBackground.anchoredPosition = new Vector2(0, topY);
@@ -165,7 +165,7 @@ namespace SystemHeat.UI
       }
       else
       {
-        /// set height to max
+        // set height to max
         loopPanelScrollViewportRect.anchoredPosition = new Vector2(0, loopPanelMaxHeight);
         loopPanelScrollViewportRect.sizeDelta = new Vector2(0, loopPanelMaxHeight);
         loopPanelScrollBackground.anchoredPosition = new Vector2(0, loopPanelMaxHeight);

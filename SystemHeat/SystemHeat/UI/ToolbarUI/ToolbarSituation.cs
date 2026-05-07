@@ -142,22 +142,14 @@ namespace SystemHeat.UI
     }
     protected void SetSituationAtmosphereControlState(bool state)
     {
-      float panelSize;
-
       if (state)
       {
-        panelSize = 370f;
         situationData.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 140f);
       }
       else
       {
-        panelSize = 260f;
         situationData.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 30f);
       }
-      //rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, panelSize);
-      //loopPanelScrollViewportRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, panelSize - 45f);
-      //loopPanelScrollRootRect.GetComponent<LayoutElement>().minHeight = panelSize - 45f;
-
 
       velocitySlider.gameObject.SetActive(state);
       velocityLabel.gameObject.SetActive(state);

@@ -73,6 +73,7 @@ namespace SystemHeat
     /// Build a new HeatLoop
     /// </summary>
     /// <param name="id">The loop ID number</param>
+    /// <param name="sim"></param>
     public HeatLoop(SystemHeatSimulator sim, int id)
     {
       ID = id;
@@ -219,7 +220,7 @@ namespace SystemHeat
     /// 2) calculates the temperature change of the loop
     /// 3) propagates all new values to the simulation members
     /// </summary>
-    /// <param name="simTimStep">the time step</param>
+    /// <param name="simTimeStep">the time step</param>
     void SimulateIteration(float simTimeStep)
     {
       // Calculate the loop net flux
@@ -262,7 +263,7 @@ namespace SystemHeat
         // Increase based on positive flux only
         Temperature = Temperature + PositiveFlux * 1000f / (Volume * CoolantType.Density * CoolantType.HeatCapacity) * simTimeStep;
 
-        /// clamp to nominal in case exceeded this iteration
+        // clamp to nominal in case exceeded this iteration
         Temperature = Mathf.Clamp(Temperature, 0f, NominalTemperature);
       }
       // If the current temperature is just right...

@@ -22,6 +22,7 @@ namespace SystemHeat
     /// Log a message with the mod name tag prefixed
     /// </summary>
     /// <param name="str">message string </param>
+    /// <param name="logType">the subsystem that is emitting this log</param>
     public static void Log(string str, LogType logType)
     {
       bool doLog = false;
@@ -51,7 +52,7 @@ namespace SystemHeat
     }
 
 
-    // <summary>
+    /// <summary>
     /// Return true if the Part Action Window for this part is shown, false otherwise
     /// </summary>
     public static bool IsPAWVisible(this Part part)
@@ -101,7 +102,7 @@ namespace SystemHeat
       {
         result = parent.FindDeepChild(name).GetComponent<T>();
       }
-      catch (NullReferenceException e)
+      catch (NullReferenceException)
       {
         Debug.LogError($"Couldn't find {name} in children of {parent.name}");
       }

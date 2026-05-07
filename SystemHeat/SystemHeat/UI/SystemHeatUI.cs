@@ -176,7 +176,7 @@ namespace SystemHeat.UI
       {
         if (HighLogic.LoadedSceneIsFlight)
         {
-          /// TODO: Handle refresh of application launcher when switching ships
+          // TODO: Handle refresh of application launcher when switching ships
           if (FlightGlobals.ActiveVessel != null)
           {
             if (thisVessel == null)

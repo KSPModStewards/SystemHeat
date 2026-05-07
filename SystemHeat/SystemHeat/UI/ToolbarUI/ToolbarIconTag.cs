@@ -135,7 +135,7 @@ namespace SystemHeat.UI
           {
             if (loopOverheated || loopFluxNotBalanced)
             {
-              /// get outta here
+              // get outta here
               break;
             }
             if (simulator.HeatLoops[i].Temperature > (simulator.HeatLoops[i].NominalTemperature + 1.05f))
