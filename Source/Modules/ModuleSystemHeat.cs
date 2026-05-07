@@ -105,7 +105,6 @@ namespace SystemHeat
     protected SystemHeatSimulator simulator;
     protected readonly Dictionary<string, float> fluxes = [];
     protected readonly Dictionary<string, float> temperatures = [];
-    protected readonly List<int> loopIDs = [];
 
     public override string GetModuleDisplayName()
     {
@@ -115,14 +114,6 @@ namespace SystemHeat
     public override string GetInfo()
     {
       return Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
-    }
-
-    public override void OnAwake()
-    {
-      base.OnAwake();
-
-      for (int i = 0; i < SystemHeatSettings.maxLoopCount; i++)
-        loopIDs.Add(i);
     }
 
     public void Start()
@@ -179,51 +170,48 @@ namespace SystemHeat
     {
       using var scope = x_AddFluxMarker.Auto();
 
-      if (fluxes != null && temperatures != null)
+      fluxes[id] = flux;
+
+      // Add if used for nominal
+      if (useForNominal)
       {
-        fluxes[id] = flux;
+        temperatures[id] = sourceTemperature;
+      }
+      else
+      {
+        temperatures[id] = 0f;
+      }
 
-        // Add if used for nominal
-        if (useForNominal)
+      totalSystemFlux = 0;
+      foreach (var f in fluxes.Values)
+      {
+        totalSystemFlux += f;
+      }
+      totalSystemFlux *= (float)(PhysicsGlobals.InternalHeatProductionFactor / 0.025d);
+      totalSystemTemperature = 0;
+      float denom = 0;
+      foreach (var temp in temperatures.Values)
+      {
+        if (temp > 0f)
         {
-          temperatures[id] = sourceTemperature;
+          totalSystemTemperature += temp;
+          denom++;
         }
-        else
-        {
-          temperatures[id] = 0f;
-        }
+      }
 
-        totalSystemFlux = 0;
-        foreach (var f in fluxes.Values)
-        {
-          totalSystemFlux += f;
-        }
-        totalSystemFlux *= (float)(PhysicsGlobals.InternalHeatProductionFactor / 0.025d);
-        totalSystemTemperature = 0;
-        float denom = 0;
-        foreach (var temp in temperatures.Values)
-        {
-          if (temp > 0f)
-          {
-            totalSystemTemperature += temp;
-            denom++;
-          }
-        }
+      if (denom > 0)
+        systemNominalTemperature = totalSystemTemperature / denom;
+      else
+        systemNominalTemperature = 0f;
 
-        if (denom > 0)
-          systemNominalTemperature = totalSystemTemperature / denom;
-        else
-          systemNominalTemperature = 0f;
-
-        totalSystemTemperature = systemNominalTemperature;
-        if (totalSystemTemperature == 0f)
-        {
-          ignoreTemperature = true;
-        }
-        else
-        {
-          ignoreTemperature = false;
-        }
+      totalSystemTemperature = systemNominalTemperature;
+      if (totalSystemTemperature == 0f)
+      {
+        ignoreTemperature = true;
+      }
+      else
+      {
+        ignoreTemperature = false;
       }
     }
 
