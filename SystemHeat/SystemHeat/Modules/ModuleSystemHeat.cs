@@ -123,10 +123,7 @@ namespace SystemHeat
 
     public override string GetInfo()
     {
-      string msg = "";
-
-      msg += Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
-      return msg;
+      return Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
     }
 
     public void Start()
