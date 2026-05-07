@@ -200,6 +200,13 @@ namespace SystemHeat.UI
     protected void Update()
     {
       float nominalTemp = 0f;
+      float coreTemp = 0f;
+
+      if (heatModule != null)
+      {
+        coreTemp = heatModule.LoopTemperature;
+      }
+
       if (module.moduleName == "FusionReactor" || module.moduleName == "ModuleFusionEngine")
       {
         nominalTemp = float.Parse(module.Fields.GetValue("SystemOutletTemperature").ToString());
@@ -241,16 +248,17 @@ namespace SystemHeat.UI
           }
         }
         chargeBar.color = fillColor;
-
       }
+
       if (module.moduleName == "ModuleSystemHeatFissionReactor" || module.moduleName == "ModuleSystemHeatFissionEngine")
       {
         nominalTemp = float.Parse(module.Fields.GetValue("NominalTemperature").ToString());
+        coreTemp = module.Fields.GetValue<float>("InternalCoreTemperature");
         heatText.text = Localizer.Format("#LOC_SystemHeat_ReactorPanel_Field_HeatGenerated",
           Utils.ToSI(float.Parse(module.Fields.GetValue("CurrentHeatGeneration").ToString()), "F0"));
         powerText.text = Localizer.Format("#LOC_SystemHeat_ReactorPanel_Field_PowerGenerated", float.Parse(module.Fields.GetValue("CurrentElectricalGeneration").ToString()).ToString("F0"));
         lifetimeText.text = Localizer.Format("#LOC_SystemHeat_ReactorPanel_Field_CoreLife", module.Fields.GetValue("FuelStatus"));
-        temperatureText.text = Localizer.Format("#LOC_SystemHeat_ReactorPanel_Field_CoreTemperature", nominalTemp, heatModule.LoopTemperature.ToString("F0"));
+        temperatureText.text = Localizer.Format("#LOC_SystemHeat_ReactorPanel_Field_CoreTemperature", nominalTemp, coreTemp.ToString("F0"));
 
         bool.TryParse(module.Fields.GetValue("Enabled").ToString(), out bool isOn);
         if (isOn != onToggle.isOn)
@@ -259,7 +267,7 @@ namespace SystemHeat.UI
         }
         
       }
-      if (heatModule.LoopTemperature > nominalTemp)
+      if (coreTemp > nominalTemp)
       {
         if (warningIcon.enabled != true)
         {
