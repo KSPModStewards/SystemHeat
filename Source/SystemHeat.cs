@@ -7,26 +7,16 @@ using KSP.Localization;
 
 namespace SystemHeat
 {
-  [KSPAddon(KSPAddon.Startup.EveryScene, false)]
-  public class SystemHeat : MonoBehaviour
-  {
-    public static SystemHeat Instance { get; private set; }
-
-    protected void Awake()
-    {
-      Instance = this;
-    }
-    protected void Start()
-    {
-      SystemHeatSettings.Load();
-    }
-  }
-
   /// <summary>
   /// Static class to hold settings and configuration
   /// </summary>
   public static class SystemHeatSettings
   {
+    public static void ModuleManagerPostLoad()
+    {
+      Load();
+    }
+
     /// <summary>
     /// Emit log messages about the UI
     /// </summary>
@@ -96,6 +86,12 @@ namespace SystemHeat
 
     // UI Stuff
     public static float UISrollSensitivity = 25f;
+
+    // Radiator Performance
+    // if the optional harvester and converter patches are installed, we can avoid calling the expensive stock radiator logic
+    public static bool HarvesterPatchesInstalled = false;
+    public static bool ConverterPatchesInstalled = false;
+    public static bool ForceStockRadiatorLogic = false;
 
     // Overlay Stuff
     public static float OverlayActiveLineWidth = 6f;
@@ -182,6 +178,10 @@ namespace SystemHeat
         settingsNode.TryGetValue("OverlayPanelFluxTickSize", ref OverlayPanelFluxTickSize);
         settingsNode.TryGetValue("OverlayPanelTemperatureDeltaForMaxColor", ref OverlayPanelTemperatureDeltaForMaxColor);
         settingsNode.TryGetValue("OverlayPanelMaxTemperatureValue", ref OverlayPanelMaxTemperatureValue);
+
+        settingsNode.TryGetValue(nameof(HarvesterPatchesInstalled), ref HarvesterPatchesInstalled);
+        settingsNode.TryGetValue(nameof(ConverterPatchesInstalled), ref ConverterPatchesInstalled);
+        settingsNode.TryGetValue(nameof(ForceStockRadiatorLogic), ref ForceStockRadiatorLogic);
       }
       else
       {

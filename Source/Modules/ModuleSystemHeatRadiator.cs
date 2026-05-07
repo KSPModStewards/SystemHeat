@@ -172,6 +172,13 @@ namespace SystemHeat
         }
       }
 
+      // if we're not going to run the stock logic, hide the "cooling" field
+      if (!SystemHeatSettings.ForceStockRadiatorLogic && SystemHeatSettings.HarvesterPatchesInstalled && SystemHeatSettings.ConverterPatchesInstalled)
+      {
+        var statusField = this.Fields["status"];
+        statusField.guiActive = false;
+        statusField.guiActiveEditor = false;
+      }
     }
 
     public override string GetModuleDisplayName()
@@ -212,9 +219,12 @@ namespace SystemHeat
 
     public override void FixedUpdate()
     {
-      x_BaseFixedUpdateMarker.Begin();
-      base.FixedUpdate();
-      x_BaseFixedUpdateMarker.End();
+      if (SystemHeatSettings.ForceStockRadiatorLogic || !SystemHeatSettings.HarvesterPatchesInstalled || !SystemHeatSettings.ConverterPatchesInstalled)
+      {
+        x_BaseFixedUpdateMarker.Begin();
+        base.FixedUpdate();
+        x_BaseFixedUpdateMarker.End();
+      }
 
       if (heatModule != null)
       {
