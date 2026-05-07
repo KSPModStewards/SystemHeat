@@ -72,8 +72,8 @@ namespace SystemHeat
     /// <summary>
     /// Build a new HeatLoop
     /// </summary>
-    /// <param name="id">The loop ID number</param>
     /// <param name="sim"></param>
+    /// <param name="id">The loop ID number</param>
     public HeatLoop(SystemHeatSimulator sim, int id)
     {
       ID = id;
