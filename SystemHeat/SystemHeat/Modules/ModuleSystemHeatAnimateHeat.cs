@@ -36,6 +36,7 @@ namespace SystemHeat
 
       maxTempAnimation -= draperPoint;
     }
+
     public void FixedUpdate()
     {
       if (HighLogic.LoadedSceneIsFlight && scalarModule != null && heatModule != null)
