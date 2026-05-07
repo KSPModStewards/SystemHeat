@@ -10,11 +10,11 @@ namespace SystemHeat
 
   public struct EngineBaseData
   {
-    public ModuleEnginesFX engineModule;
+    public ModuleEngines engineModule;
     public float maxThrust;
     public FloatCurve ispCurve;
 
-    public EngineBaseData(ModuleEnginesFX fx)
+    public EngineBaseData(ModuleEngines fx)
     {
 
       engineModule = fx;
@@ -94,8 +94,8 @@ namespace SystemHeat
       {
         engineOnStates = new List<bool>();
         engines = new List<EngineBaseData>();
-        ModuleEnginesFX[] engineModules = this.GetComponents<ModuleEnginesFX>();
-        foreach (ModuleEnginesFX fx in engineModules)
+        ModuleEngines[] engineModules = this.GetComponents<ModuleEngines>();
+        foreach (ModuleEngines fx in engineModules)
         {
           engines.Add(new EngineBaseData(fx));
           engineOnStates.Add(false);

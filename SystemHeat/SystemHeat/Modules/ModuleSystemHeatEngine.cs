@@ -66,7 +66,7 @@ namespace SystemHeat
     public override string GetInfo()
     {
       string msg = "";
-      ModuleEnginesFX[] engines = part.GetComponents<ModuleEnginesFX>();
+      ModuleEngines[] engines = part.GetComponents<ModuleEngines>();
       msg += Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatEngine_PartInfo",
         Utils.ToSI(systemPower,"F0"),
         systemOutletTemperature.ToString("F0"),

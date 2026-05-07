@@ -97,8 +97,8 @@ namespace SystemHeat
       {
         engineOnStates = new List<bool>();
         engines = new List<EngineBaseData>();
-        ModuleEnginesFX[] engineModules = this.GetComponents<ModuleEnginesFX>();
-        foreach (ModuleEnginesFX fx in engineModules)
+        ModuleEngines[] engineModules = this.GetComponents<ModuleEngines>();
+        foreach (ModuleEngines fx in engineModules)
         {
           engines.Add(new EngineBaseData(fx));
           engineOnStates.Add(false);
