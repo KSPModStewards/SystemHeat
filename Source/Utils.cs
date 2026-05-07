@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.Profiling;
 using UnityEngine;
 
 
@@ -136,5 +138,29 @@ namespace SystemHeat
       }
       return null;
     }
+  }
+
+  internal static class ProfilingExt
+  {
+#if ENABLE_PROFILER
+    [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal struct Scope(ProfilerMarker.AutoScope scope) : IDisposable
+    {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public readonly void Dispose() => scope.Dispose();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Scope ConditionalAuto(this ProfilerMarker marker) => new(marker.Auto());
+#else
+    internal struct Scope : IDisposable
+    {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public readonly void Dispose() { }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Scope ConditionalAuto(this ProfilerMarker _) => default;
+#endif
   }
 }

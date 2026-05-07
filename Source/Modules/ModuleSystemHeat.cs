@@ -168,7 +168,7 @@ namespace SystemHeat
     /// </param>
     public void AddFlux(string id, float sourceTemperature, float flux, bool useForNominal)
     {
-      using var scope = x_AddFluxMarker.Auto();
+      using var scope = x_AddFluxMarker.ConditionalAuto();
 
       fluxes[id] = flux;
 
