@@ -158,7 +158,10 @@ namespace SystemHeat
       
       
         Utils.Log(String.Format("[SystemHeatVessel]: OnVesselRollout", this.GetType().Name), LogType.Simulator);
-      simulator.ResetTemperatures();
+      if (simulator != null)
+      {
+        simulator.ResetTemperatures();
+      }
     }
   }
 }
