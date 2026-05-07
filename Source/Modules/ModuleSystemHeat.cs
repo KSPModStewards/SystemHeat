@@ -103,9 +103,9 @@ namespace SystemHeat
     }
 
     protected SystemHeatSimulator simulator;
-    protected Dictionary<string, float> fluxes;
-    protected Dictionary<string, float> temperatures;
-    protected List<int> loopIDs;
+    protected Dictionary<string, float> fluxes = [];
+    protected Dictionary<string, float> temperatures = [];
+    protected List<int> loopIDs = [];
 
     public override string GetModuleDisplayName()
     {
@@ -119,11 +119,6 @@ namespace SystemHeat
 
     public void Start()
     {
-
-      loopIDs = new List<int>();
-      fluxes = new Dictionary<string, float>();
-      temperatures = new Dictionary<string, float>();
-
       for (int i = 0; i < SystemHeatSettings.maxLoopCount; i++)
         loopIDs.Add(i);
 
