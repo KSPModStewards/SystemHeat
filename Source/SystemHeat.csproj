@@ -1,12 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>0.8.2</Version>
     <AssemblyName>SystemHeat</AssemblyName>
     <RootNamespace>SystemHeat</RootNamespace>
     <TargetFramework>net481</TargetFramework>
 
-    <FileVersion>$(Version)</FileVersion>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
 
     <Description>Heat handling system for Kerbal Space Program</Description>
@@ -25,6 +22,10 @@
     <DefineConstants Condition="'$(Configuration)'=='Profiling'">$(DefineConstants);ENABLE_PROFILER</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(KSBT_ModVersion)' != '' ">
+    <Version>$(KSPBT_ModVersion)</Version>
+  </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="KSPBuildTools" Version="1.1.1" />
   </ItemGroup>
