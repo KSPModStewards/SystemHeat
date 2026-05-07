@@ -82,17 +82,7 @@ namespace SystemHeat
     [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "#LOC_SystemHeat_ModuleSystemHeat_Field_LoopTemperature", groupName = "sysheatinfo", groupDisplayName = "#LOC_SystemHeat_ModuleSystemHeat_GroupName", groupStartCollapsed = false)]
     public string LoopTemperatureUI = "-";
 
-    public HeatLoop Loop
-    {
-      get
-      {
-        if (simulator != null)
-        {
-          return simulator.Loop(currentLoopID);
-        }
-        else return null;
-      }
-    }
+    public HeatLoop Loop => simulator?.Loop(currentLoopID);
 
     public int LoopID
     {
