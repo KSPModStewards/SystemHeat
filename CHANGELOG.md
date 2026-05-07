@@ -1,4 +1,4 @@
-## Unreleased
+## 0.9 - 2026-05-07
 
 - Fixed memory leaks from dangling event handlers.
 - Improved performance
@@ -21,6 +21,7 @@
 - Updated Chinese translation ( thanks @Aebestach )
 - Fixed fission engines logic for engines that use ModuleEngines instead of ModuleEnginesFX (e.g. LV-N when waterfall is not installed)
 - Fixed fission reactor patches for USI when NearFutureElectrical is also installed.  Made the existing patches also match NFE's values when it is not present
+
 
 ## v0.8.2
 
