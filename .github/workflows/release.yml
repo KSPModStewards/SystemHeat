@@ -13,7 +13,7 @@ jobs:
   release:
     permissions:
       contents: write
-    uses: Phantomical/KSPBuildTools/.github/workflows/create-release.yml@release-format-options
+    uses: Phantomical/KSPBuildTools/.github/workflows/create-release.yml@update-create-release
     with:
       version-string: ${{ inputs.version-string }}
       artifacts: GameData Extras LICENSE* README* CHANGELOG*

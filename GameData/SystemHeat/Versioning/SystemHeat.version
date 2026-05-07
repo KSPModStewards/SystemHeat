@@ -1,28 +1,9 @@
 {
-    "NAME":"SystemHeat",
-    "URL":"https://raw.githubusercontent.com/post-kerbin-mining-corporation/SystemHeat/master/GameData/SystemHeat/Versioning/SystemHeat.version",
-    "DOWNLOAD":"https://github.com/post-kerbin-mining-corporation/SystemHeat",
-    "VERSION":
-    {
-        "MAJOR":0,
-        "MINOR":8,
-        "PATCH":2,
-        "BUILD":0
-    },
-    "KSP_VERSION":
-    {
-        "MAJOR":1,
-        "MINOR":12,
-        "PATCH":5
-    },
-    "KSP_VERSION_MIN":{
-        "MAJOR":1,
-        "MINOR":11,
-        "PATCH":0
-    },
-    "KSP_VERSION_MAX":{
-        "MAJOR":1,
-        "MINOR":12,
-        "PATCH":99
-    }
+  "NAME": "SystemHeat",
+  "URL": "https://github.com/post-kerbin-mining-corporation/SystemHeat/releases/latest/download/SystemHeat.version",
+  "DOWNLOAD": "https://github.com/post-kerbin-mining-corporation/SystemHeat/releases",
+  "KSP_VERSION": "1.12.5",
+  "KSP_VERSION_MIN": "1.11.0",
+  "KSP_VERSION_MAX": "1.12.99",
+  "VERSION": "0.8.2"
 }
