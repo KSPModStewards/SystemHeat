@@ -123,10 +123,7 @@ namespace SystemHeat
 
     public override string GetInfo()
     {
-      string msg = "";
-
-      msg += Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
-      return msg;
+      return Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
     }
 
     public void Start()
@@ -247,6 +244,10 @@ namespace SystemHeat
     /// <param name="id">the string ID of the source (should be unique)</param>
     /// <param name="sourceTemperature">the temperature of the source</param>
     /// <param name="flux">the flux of the source</param>
+    /// <param name="useForNominal">
+    ///   whether this temperature should be used when determining the nominal temperature
+    ///   of the loop
+    /// </param>
     public void AddFlux(string id, float sourceTemperature, float flux, bool useForNominal)
     {
 
@@ -304,8 +305,8 @@ namespace SystemHeat
       if (fluxes != null && temperatures != null)
       {
         return fluxes.Where(x => x.Key != id).Sum(x => x.Value) * (float)(PhysicsGlobals.InternalHeatProductionFactor / 0.025d);
-
       }
+
       return 0f;
     }
 

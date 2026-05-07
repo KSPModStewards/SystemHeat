@@ -38,7 +38,6 @@ namespace SystemHeat
     [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "#LOC_SystemHeat_ModuleSystemHeatFissionEngine_Field_CurrentExhaustCooling", groupName = "fissionreactor", groupDisplayName = "#LOC_SystemHeat_ModuleSystemHeatFissionReactor_UIGroup_Title")]
     public string CurrentExhaustCooling = "-1";
 
-    private float currentEngineCooling = 0f;
     private List<bool> engineOnStates;
     private List<EngineBaseData> engines;
     private MultiModeEngine multiEngine;

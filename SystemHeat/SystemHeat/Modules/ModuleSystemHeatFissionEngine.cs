@@ -327,7 +327,7 @@ namespace SystemHeat
     public override void ReactorDeactivated()
     {
       base.ReactorDeactivated();
-      /// Kill every engine on the part
+      // Kill every engine on the part
       for (int engineIndex = 0; engineIndex < engines.Count; engineIndex++)
       {
         KillEngine(engineIndex);

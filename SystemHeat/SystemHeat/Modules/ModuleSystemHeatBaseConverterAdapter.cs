@@ -50,8 +50,6 @@ namespace SystemHeat
     protected ModuleSystemHeat heatModule;
     protected BaseConverter converterModule;
 
-
-
     public string EditConverterModuleInfo(string source)
     {
       string msg = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatBaseConverterAdapter_PartInfo",
@@ -70,9 +68,9 @@ namespace SystemHeat
 
     public override void OnIconCreate()
     {
-
       base.OnIconCreate();
     }
+
     public void Start()
     {
       heatModule = ModuleUtils.FindHeatModule(this.part, systemHeatModuleID);
@@ -148,7 +146,6 @@ namespace SystemHeat
                                                              ScreenMessageStyle.UPPER_CENTER));
           converterModule.ToggleResourceConverterAction(new KSPActionParam(0, KSPActionType.Activate));
           Utils.Log("[ModuleSystemHeatBaseConverterAdapter]: Overheated, shutdown fired", LogType.Modules);
-
         }
       }
     }

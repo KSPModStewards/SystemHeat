@@ -142,10 +142,10 @@ namespace SystemHeat
       {
         double toBoil = resource.amount * (1.0 - Math.Pow(1.0 - boiloffRateSeconds, seconds)) * scale;
         double boilResult;
-        /// If you're reading this, stop now
+        // If you're reading this, stop now
         if (!resource.flowState)
         {
-          /// This handles if the flow has been disabled in the UI. we gotta ignore it, in the best way possible
+          // This handles if the flow has been disabled in the UI. we gotta ignore it, in the best way possible
           resource.flowState = true;
           boilResult = part.RequestResource(resource.info.id, toBoil, ResourceFlowMode.NO_FLOW);
           resource.flowState = false;
@@ -155,7 +155,7 @@ namespace SystemHeat
           boilResult = part.RequestResource(resource.info.id, toBoil, ResourceFlowMode.NO_FLOW);
         }
 
-        /// Generate outputs
+        // Generate outputs
         if (outputs.Count > 0)
         {
           for (int i = 0; i < outputs.Count; i++)

@@ -248,7 +248,7 @@ namespace SystemHeat
 
       if (HighLogic.LoadedSceneIsFlight)
       {
-        /// Check to see if there's any boiloff resources on this part
+        // Check to see if there's any boiloff resources on this part
         HasAnyBoiloffResource = false;
         foreach (BoiloffFuel fuel in fuels)
         {
@@ -262,7 +262,7 @@ namespace SystemHeat
             fuel.fuelPresent = false;
           }
         }
-        /// if no resources turn off the UI and return
+        // if no resources turn off the UI and return
         if (!HasAnyBoiloffResource)
         {
           Events["Disable"].guiActive = false;
@@ -317,7 +317,6 @@ namespace SystemHeat
       {
         Utils.Log(String.Format("[ModuleSystemHeatCryoTank] Reloading ConfigNodes for {0}", part.partInfo.name), LogType.Modules);
 
-        ConfigNode cfg;
         foreach (UrlDir.UrlConfig pNode in GameDatabase.Instance.GetConfigs("PART"))
         {
           if (pNode.name.Replace("_", ".") == part.partInfo.name)
@@ -403,7 +402,7 @@ namespace SystemHeat
 
       if (HighLogic.LoadedSceneIsFlight && HasAnyBoiloffResource)
       {
-        /// Show the insulation status field if there is a cooling cost
+        // Show the insulation status field if there is a cooling cost
         if (IsCoolable())
         {
           Fields["CoolingStatus"].guiActive = true;
@@ -453,7 +452,7 @@ namespace SystemHeat
           heatModule.SetSystemHeatModuleEnabled(false);
         }
 
-        /// if there is no more fuel, hide the boiloff status
+        // if there is no more fuel, hide the boiloff status
         if (fuelAmount == 0.0)
         {
           if (pawIsOpen)
@@ -467,7 +466,7 @@ namespace SystemHeat
       }
       else if (HighLogic.LoadedSceneIsEditor)
       {
-        /// Check for the presence of any resource
+        // Check for the presence of any resource
         HasAnyBoiloffResource = false;
         foreach (BoiloffFuel fuel in fuels)
         {
@@ -648,7 +647,7 @@ namespace SystemHeat
     /// <summary>
     /// Sets the boiloff state
     /// </summary>
-    /// <param name="state">Whether boiloff is occuring or not</param>
+    /// <param name="isBoiling">Whether boiloff is occuring or not</param>
     /// <return>The total cost of the boiloff</return>
     public double SetBoiloffState(bool isBoiling)
     {

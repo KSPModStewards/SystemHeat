@@ -26,7 +26,7 @@ namespace SystemHeat.UI
       craftStatsTitle = Utils.FindChildOfType<Text>("StatsHeaderText", root);
       dataPanel = Utils.FindChildOfType<RectTransform>("StatsDataPanel", root);
 
-      /// Data
+      // Data
       totalIncomingFluxTitle = Utils.FindChildOfType<Text>("HeatGenerationTitle", root);
       totalOutgoingFluxTitle = Utils.FindChildOfType<Text>("HeatRejectionTitle", root);
       totalLoopsTitle = Utils.FindChildOfType<Text>("LoopCountTitle", root);
@@ -35,7 +35,7 @@ namespace SystemHeat.UI
       totalOutgoingFluxValue = Utils.FindChildOfType<Text>("HeatRejectionValue", root);
       totalLoopsValue = Utils.FindChildOfType<Text>("LoopCountValue", root);
 
-      /// Show loops button
+      // Show loops button
       loopButton = Utils.FindChildOfType<Button>("MoreButton", root);
       loopButtonRect = loopButton.GetComponent<RectTransform>();
       loopButtonText = Utils.FindChildOfType<Text>("MoreButtonText", root);

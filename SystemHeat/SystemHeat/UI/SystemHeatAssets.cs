@@ -25,7 +25,7 @@ namespace SystemHeat.UI
       Utils.Log("[SystemHeatAssets]: Loading Assets", LogType.UI);
       AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(KSPUtil.ApplicationRootPath, ASSET_PATH));
 
-      /// Get the Prefabs
+      // Get the Prefabs
       OverlayPanelPrefab = prefabs.LoadAsset("SystemInfo") as GameObject;
       ToolbarPanelPrefab = prefabs.LoadAsset("SystemHeatToolbar") as GameObject;
       ToolbarPanelLoopPrefab = prefabs.LoadAsset("SystemHeatLoopData") as GameObject;
@@ -33,7 +33,7 @@ namespace SystemHeat.UI
       ReactorWidgetPrefab = prefabs.LoadAsset("ReactorWidget") as GameObject;
 
       Utils.Log("[SystemHeatAssets]: Loaded UI Prefabs", LogType.UI);
-      /// Get the Sprite Atlas
+      // Get the Sprite Atlas
       Sprite[] spriteSheet = prefabs.LoadAssetWithSubAssets<Sprite>(SPRITE_ATLAS_NAME);
       Sprites = new Dictionary<string, Sprite>();
       foreach (Sprite subSprite in spriteSheet)
