@@ -1,7 +1,23 @@
 ## Unreleased
 
 - Fixed memory leaks from dangling event handlers.
-
+- Improved performance
+  - Moved several PAW item updates out of FixedUpdate and running them only when the PAW is open
+  - Cache BDB's ModuleJettison field
+  - Removed several sources of unnecssary allocations
+  - No longer updates the overlay UI when it's not being shown
+  - Several optimizations in the overlay UI code
+  - SystemHeatVessel is now only added to loaded vessels
+- Fixed potential fatal NRE for badly configured parts
+- Fixed NRE when launching a vessel
+- Fixed NRE when opening the reactor UI for fission engines that don't have heat modules
+- Fixed consumedSystemFlux calculation when the consumed amount exactly matches the produced amount
+- Fixed typo in Boiloff configs that set all tanks to have 0.5 volume, rather than 0.5 * mass.  This is likely a breaking change.  ( Thanks @Wyzard256 )
+- Fixed MM patch targeting fuel types in boiloff config
+- Fixed some tooltips in the game settings window
+- Updated Chinese translation ( thanks @Aebestach )
+- Fixed fission engines logic for engines that use ModuleEngines instead of ModuleEnginesFX (e.g. LV-N when waterfall is not installed)
+- Fixed fission reactor patches for USI when NearFutureElectrical is also installed.  Made the existing patches also match NFE's values when it is not present
 
 ## v0.8.2
 
