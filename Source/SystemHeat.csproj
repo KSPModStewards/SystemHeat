@@ -17,7 +17,7 @@
     <KSPBT_ModRoot>$(ProjectRootDir)GameData\SystemHeat</KSPBT_ModRoot>
     <KSPBT_ModPluginFolder>Plugin</KSPBT_ModPluginFolder>
 
-    <LangVersion>14</LangVersion>
+    <LangVersion>9</LangVersion>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
