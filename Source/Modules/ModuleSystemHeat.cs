@@ -117,11 +117,16 @@ namespace SystemHeat
       return Localizer.Format("#LOC_SystemHeat_ModuleSystemHeat_PartInfo", volume.ToString("F2"));
     }
 
-    public void Start()
+    public override void OnAwake()
     {
+      base.OnAwake();
+      
       for (int i = 0; i < SystemHeatSettings.maxLoopCount; i++)
         loopIDs.Add(i);
+    }
 
+    public void Start()
+    {
       SetupUI();
 
       Fields["totalSystemTemperature"].guiActive = SystemHeatSettings.DebugPartUI;
