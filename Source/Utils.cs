@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.Profiling;
 using UnityEngine;
 
 
@@ -14,9 +16,30 @@ namespace SystemHeat
     Simulator,
     Any
   }
+
   public static class Utils
   {
-    public static string logTag = "SystemHeat";
+    public static readonly string logTag = "SystemHeat";
+
+    /// <summary>
+    /// Is logging enabled for a given subsystem? Use this to avoid formatting
+    /// calls if the logging wouldn't happen anyway.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static bool IsLogEnabled(LogType type)
+    {
+      return type switch
+      {
+        LogType.Settings => SystemHeatSettings.DebugSettings,
+        LogType.UI => SystemHeatSettings.DebugUI,
+        LogType.Modules => SystemHeatSettings.DebugModules,
+        LogType.Overlay => SystemHeatSettings.DebugOverlay,
+        LogType.Simulator => SystemHeatSettings.DebugSimulation,
+        LogType.Any => true,
+        _ => false
+      };
+    }
 
     /// <summary>
     /// Log a message with the mod name tag prefixed
@@ -25,31 +48,13 @@ namespace SystemHeat
     /// <param name="logType">the subsystem that is emitting this log</param>
     public static void Log(string str, LogType logType)
     {
-      bool doLog = false;
-      if (logType == LogType.Settings && SystemHeatSettings.DebugSettings) doLog = true;
-      if (logType == LogType.UI && SystemHeatSettings.DebugUI) doLog = true;
-      if (logType == LogType.Modules && SystemHeatSettings.DebugModules) doLog = true;
-      if (logType == LogType.Overlay && SystemHeatSettings.DebugOverlay) doLog = true;
-      if (logType == LogType.Simulator && SystemHeatSettings.DebugSimulation) doLog = true;
-      if (logType == LogType.Any) doLog = true;
-
-      if (doLog)
-        Debug.Log(String.Format("[{0}]{1}", logTag, str));
+      if (IsLogEnabled(logType))
+        Debug.Log($"[{logTag}]{str}");
     }
 
-    public static void Log(string str)
-    {
-      Debug.Log(String.Format("[{0}]{1}", logTag, str));
-    }
-
-      public static void LogWarning(string toLog)
-    {
-      Debug.LogWarning(String.Format("[{0}]{1}", logTag, toLog));
-    }
-    public static void LogError(string toLog)
-    {
-      Debug.LogError(String.Format("[{0}]{1}", logTag, toLog));
-    }
+    public static void Log(string str) => Debug.Log($"[{logTag}]{str}");
+    public static void LogWarning(string toLog) => Debug.LogWarning($"[{logTag}]{toLog}");
+    public static void LogError(string toLog) => Debug.LogError($"[{logTag}]{toLog}");
 
 
     /// <summary>
@@ -133,5 +138,29 @@ namespace SystemHeat
       }
       return null;
     }
+  }
+
+  internal static class ProfilingExt
+  {
+#if ENABLE_PROFILER
+    [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal struct Scope(ProfilerMarker.AutoScope scope) : IDisposable
+    {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public readonly void Dispose() => scope.Dispose();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Scope ConditionalAuto(this ProfilerMarker marker) => new(marker.Auto());
+#else
+    internal struct Scope : IDisposable
+    {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public readonly void Dispose() { }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Scope ConditionalAuto(this ProfilerMarker _) => default;
+#endif
   }
 }
