@@ -8,5 +8,5 @@
     <File Path="CHANGELOG.md" />
     <File Path="SystemHeat/SystemHeat/SystemHeat.csproj.user" />
   </Folder>
-  <Project Path="SystemHeat/SystemHeat/SystemHeat.csproj" />
+  <Project Path="Source/SystemHeat.csproj" />
 </Solution>
