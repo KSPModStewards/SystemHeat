@@ -1,61 +1,21 @@
 name: Release
 
 on:
-  release:
-    types: [published]
-  pull_request:
-    paths:
-      - .github/workflows/release.yml
+  workflow_dispatch:
+    inputs:
+      version-string:
+        description: 'Version (e.g. 0.8.3) or one of --major / --minor / --patch to bump from CHANGELOG.md'
+        required: true
+        default: --patch
+        type: string
 
 jobs:
-  build:
-    uses: KSPModdingLibs/KSPBuildTools/.github/workflows/build.yml@1.1.1
-    with:
-      artifacts:
-        GameData Extras LICENSE* README* CHANGELOG*
-
-  assemble-release-assets:
-    needs: build
-    runs-on: ubuntu-latest
+  release:
     permissions:
       contents: write
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: SystemHeat-Release
-          path: SystemHeat
-
-      - name: Copy Version File
-        run: |
-          cp SystemHeat/GameData/SystemHeat/Versioning/SystemHeat.version .
-
-      - name: Extract Version
-        run: |
-          echo "MAJOR=$(cat SystemHeat.version | jq -r .VERSION.MAJOR)" >> "$GITHUB_ENV"
-          echo "MINOR=$(cat SystemHeat.version | jq -r .VERSION.MINOR)" >> "$GITHUB_ENV"
-          echo "PATCH=$(cat SystemHeat.version | jq -r .VERSION.PATCH)" >> "$GITHUB_ENV"
-
-      - name: Build Release Zip
-        run: |
-          cd SystemHeat
-          zip -9 -r '../SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' *
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: SystemHeat-${{env.MAJOR}}.${{env.MINOR}}.${{env.PATCH}}
-          path: SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: SystemHeat.version
-          path: SystemHeat/GameData/SystemHeat/Versioning/SystemHeat.version
-
-      - name: Upload release assets
-        if: github.event_name == 'release'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          gh release upload '${{ github.event.release.tag_name }}'        \
-            'SystemHeat_${{env.MAJOR}}_${{env.MINOR}}_${{env.PATCH}}.zip' \
-            SystemHeat.version
+    uses: Phantomical/KSPBuildTools/.github/workflows/create-release.yml@release-format-options
+    with:
+      version-string: ${{ inputs.version-string }}
+      artifacts: GameData Extras LICENSE* README* CHANGELOG*
+      flatten: true
+      version-file: GameData/SystemHeat/Versioning/SystemHeat.version
