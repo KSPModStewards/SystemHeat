@@ -41,6 +41,7 @@ namespace SystemHeat
     private List<ResourceBaseRatio> inputs;
     private List<ResourceBaseRatio> outputs;
     protected ModuleSystemHeat heatModule;
+
     public override string GetInfo()
     {
       string info = base.GetInfo();
@@ -55,6 +56,7 @@ namespace SystemHeat
           shutdownTemperature.ToString("F0")
           ) + info.Substring(pos);
     }
+
     public void Start()
     {
       heatModule = ModuleUtils.FindHeatModule(this.part, systemHeatModuleID);
@@ -70,6 +72,7 @@ namespace SystemHeat
       Utils.Log("[ModuleSystemHeatAsteroidHarvester] Setup completed", LogType.Modules);
       Fields["HarvesterEfficiency"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency", base.ConverterName);
     }
+
     public override void FixedUpdate()
     {
       base.FixedUpdate();
@@ -123,6 +126,7 @@ namespace SystemHeat
         heatModule.AddFlux(moduleID, 0f, 0f, false);
       }
     }
+
     protected void UpdateSystemHeatFlight()
     {
       if (base.ModuleIsActive())
