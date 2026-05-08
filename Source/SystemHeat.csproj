@@ -1,14 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="SystemHeat.version.props" />
-
   <PropertyGroup>
     <AssemblyName>SystemHeat</AssemblyName>
     <RootNamespace>SystemHeat</RootNamespace>
     <TargetFramework>net481</TargetFramework>
-
-    <FileVersion>$(Version)</FileVersion>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
 
     <Description>Heat handling system for Kerbal Space Program</Description>
     <Company>Area Denial Games</Company>
