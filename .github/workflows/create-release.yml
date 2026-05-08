@@ -13,3 +13,4 @@ jobs:
     with:
       version-string: ${{ inputs.version-string }}
       version-template-extension:
+      version-file: GameData/SystemHeat/Versioning/SystemHeat.version
