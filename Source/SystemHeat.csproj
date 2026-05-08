@@ -4,8 +4,6 @@
     <RootNamespace>SystemHeat</RootNamespace>
     <TargetFramework>net481</TargetFramework>
 
-    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
-
     <Description>Heat handling system for Kerbal Space Program</Description>
     <Company>Area Denial Games</Company>
     <Product>SystemHeat</Product>
@@ -28,6 +26,15 @@
     
   <ItemGroup>
     <PackageReference Include="KSPBuildTools" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <KSPVersionFile Include="SystemHeat.version">
+      <Destination>$(KSPBT_ModRoot)/Versioning/SystemHeat.version</Destination>
+      <KSP_Version>1.12.5</KSP_Version>
+      <KSP_Version_Min>1.11.0</KSP_Version_Min>
+      <KSP_Version_Max>1.12.99</KSP_Version_Max>
+    </KSPVersionFile>
   </ItemGroup>
 
   <ItemGroup>
