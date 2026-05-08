@@ -1,13 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>0.8.2</Version>
     <AssemblyName>SystemHeat</AssemblyName>
     <RootNamespace>SystemHeat</RootNamespace>
     <TargetFramework>net481</TargetFramework>
-
-    <FileVersion>$(Version)</FileVersion>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
 
     <Description>Heat handling system for Kerbal Space Program</Description>
     <Company>Area Denial Games</Company>
@@ -25,8 +20,21 @@
     <DefineConstants Condition="'$(Configuration)'=='Profiling'">$(DefineConstants);ENABLE_PROFILER</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(KSPBT_ModVersion)' != '' ">
+    <Version>$(KSPBT_ModVersion)</Version>
+  </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="KSPBuildTools" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <KSPVersionFile Include="SystemHeat.version">
+      <Destination>$(KSPBT_ModRoot)/Versioning/SystemHeat.version</Destination>
+      <KSP_Version>1.12.5</KSP_Version>
+      <KSP_Version_Min>1.11.0</KSP_Version_Min>
+      <KSP_Version_Max>1.12.99</KSP_Version_Max>
+    </KSPVersionFile>
   </ItemGroup>
 
   <ItemGroup>

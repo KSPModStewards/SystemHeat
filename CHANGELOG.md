@@ -10,7 +10,7 @@
   - SystemHeatVessel is now only added to loaded vessels
   - Added option to avoid running stock radiator logic if SystemHeatConverters and SystemHeatHarvesters are installed.  
     This is one of the biggest performance hits for large vessels with lots of radiators.
-    This is disabled by default; you can opt in by changing the SystemHeat settings.cfg file
+    This is disabled by default; you can opt in by setting ForceStockRadiatorLogic to false in the SystemHeat settings.cfg file
 - Fixed potential fatal NRE for badly configured parts
 - Fixed NRE when launching a vessel
 - Fixed NRE when opening the reactor UI for fission engines that don't have heat modules
@@ -21,6 +21,7 @@
 - Updated Chinese translation ( thanks @Aebestach )
 - Fixed fission engines logic for engines that use ModuleEngines instead of ModuleEnginesFX (e.g. LV-N when waterfall is not installed)
 - Fixed fission reactor patches for USI when NearFutureElectrical is also installed.  Made the existing patches also match NFE's values when it is not present
+
 
 ## v0.8.2
 

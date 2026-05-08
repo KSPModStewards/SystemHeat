@@ -12,3 +12,5 @@ jobs:
     uses: KSPModdingLibs/KSPBuildTools/.github/workflows/create-release.yml@release-version-property
     with:
       version-string: ${{ inputs.version-string }}
+      version-template-extension:
+      version-file: GameData/SystemHeat/Versioning/SystemHeat.version
