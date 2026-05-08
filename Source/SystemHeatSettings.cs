@@ -3,30 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using KSP.Localization;
 
 namespace SystemHeat
 {
-  [KSPAddon(KSPAddon.Startup.EveryScene, false)]
-  public class SystemHeat : MonoBehaviour
-  {
-    public static SystemHeat Instance { get; private set; }
-
-    protected void Awake()
-    {
-      Instance = this;
-    }
-    protected void Start()
-    {
-      SystemHeatSettings.Load();
-    }
-  }
-
   /// <summary>
   /// Static class to hold settings and configuration
   /// </summary>
   public static class SystemHeatSettings
   {
+    public static void ModuleManagerPostLoad()
+    {
+      Load();
+    }
+
     /// <summary>
     /// Emit log messages about the UI
     /// </summary>
@@ -96,6 +85,12 @@ namespace SystemHeat
 
     // UI Stuff
     public static float UISrollSensitivity = 25f;
+
+    // Radiator Performance
+    // if the optional harvester and converter patches are installed, we can avoid calling the expensive stock radiator logic
+    public static bool HarvesterPatchesInstalled = false;
+    public static bool ConverterPatchesInstalled = false;
+    public static bool ForceStockRadiatorLogic = false;
 
     // Overlay Stuff
     public static float OverlayActiveLineWidth = 6f;
@@ -182,6 +177,10 @@ namespace SystemHeat
         settingsNode.TryGetValue("OverlayPanelFluxTickSize", ref OverlayPanelFluxTickSize);
         settingsNode.TryGetValue("OverlayPanelTemperatureDeltaForMaxColor", ref OverlayPanelTemperatureDeltaForMaxColor);
         settingsNode.TryGetValue("OverlayPanelMaxTemperatureValue", ref OverlayPanelMaxTemperatureValue);
+
+        settingsNode.TryGetValue(nameof(HarvesterPatchesInstalled), ref HarvesterPatchesInstalled);
+        settingsNode.TryGetValue(nameof(ConverterPatchesInstalled), ref ConverterPatchesInstalled);
+        settingsNode.TryGetValue(nameof(ForceStockRadiatorLogic), ref ForceStockRadiatorLogic);
       }
       else
       {
@@ -216,48 +215,6 @@ namespace SystemHeat
         Utils.Log(String.Format("[Settings] {0} not found, using default coolant", name), LogType.Simulator);
         return new CoolantType();
       }
-    }
-  }
-
-  /// <summary>
-  /// Defines a type of coolant
-  /// </summary>
-  public class CoolantType
-  {
-    public string Name { get; set; }
-    public string Title { get; set; }
-    public float Density { get; set; }
-    public float HeatCapacity { get; set; }
-
-    public CoolantType(ConfigNode node)
-    {
-      Load(node);
-    }
-    public CoolantType()
-    {
-      Name = "undefined";
-      Title = "undefined";
-      Density = 1000f;
-      HeatCapacity = 4f;
-    }
-
-    public void Load(ConfigNode node)
-    {
-      Name = node.GetValue("name");
-      Title = Localizer.Format(node.GetValue("title"));
-      float density = 1000f;
-      float heatCap = 4f;
-      node.TryGetValue("density", ref density);
-      node.TryGetValue("heatCapacity", ref heatCap);
-
-      Density = density;
-      HeatCapacity = heatCap;
-      Utils.Log(String.Format("[Settings]: Loaded coolant {0}", this.ToString()), LogType.Settings);
-    }
-
-    public override string ToString()
-    {
-      return String.Format("{0}: Density {1}, heat Capacity {2}", Name, Density, HeatCapacity);
     }
   }
 }
