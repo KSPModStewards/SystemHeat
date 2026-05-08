@@ -1,7 +1,7 @@
 {
     "NAME": "SystemHeat",
-    "URL": "https://github.com/post-kerbin-mining-corporation/SystemHeat/releases/latest/download/SystemHeat.version",
-    "DOWNLOAD": "https://github.com/post-kerbin-mining-corporation/SystemHeat/releases",
+    "URL": "https://github.com/KSPModStewards/SystemHeat/releases/latest/download/SystemHeat.version",
+    "DOWNLOAD": "https://github.com/KSPModStewards/SystemHeat/releases",
     "KSP_VERSION": {
         "MAJOR": 1,
         "MINOR": 12,
