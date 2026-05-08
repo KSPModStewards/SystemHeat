@@ -103,8 +103,8 @@ namespace SystemHeat
     }
 
     protected SystemHeatSimulator simulator;
-    protected readonly Dictionary<string, float> fluxes = new ();
-    protected readonly Dictionary<string, float> temperatures = new ();
+    protected readonly Dictionary<string, float> fluxes = [];
+    protected readonly Dictionary<string, float> temperatures = [];
 
     public override string GetModuleDisplayName()
     {
@@ -138,7 +138,7 @@ namespace SystemHeat
     {
       BaseField chooseField = Fields["currentLoopID"];
       UI_ChooseOption chooseOption = HighLogic.LoadedSceneIsFlight ? chooseField.uiControlFlight as UI_ChooseOption : chooseField.uiControlEditor as UI_ChooseOption;
-      chooseOption.options = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+      chooseOption.options = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
       chooseOption.onFieldChanged = ChangeLoop;
     }
 
