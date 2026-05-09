@@ -29,6 +29,10 @@
     <PackageReference Include="KSPBuildTools" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Profiling'">
+    <AssemblyMetadata Include="HotReload" Value="true" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="Modules\ModuleSystemHeatMultiJettison.cs" />
     <None Include="Modules\ModuleSystemHeatMultiJettison.cs" />

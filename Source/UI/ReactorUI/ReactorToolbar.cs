@@ -212,7 +212,9 @@ namespace SystemHeat.UI
       if (stockToolbarButton != null)
       {
         ApplicationLauncher.Instance.RemoveModApplication(stockToolbarButton);
+        stockToolbarButton = null;
       }
+      DestroyToolbarPanel();
     }
 
     protected void OnToolbarButtonToggle()

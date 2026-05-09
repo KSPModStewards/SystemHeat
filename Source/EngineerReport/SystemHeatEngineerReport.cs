@@ -20,7 +20,18 @@ namespace SystemHeat
     {
       GameEvents.onGUIEngineersReportReady.Remove(ReportReady);
       GameEvents.onGUIEngineersReportDestroy.Remove(ReportDestroyed);
+
+      RemoveTest();
     }
+
+    // onGUIEngineersReportReady only fires once per editor session, so on a hot
+    // reload we need to re-add the tests manually here.
+    private void OnHotReload(MonoBehaviour old)
+    {
+      if (EngineersReport.Instance != null)
+        AddTest();
+    }
+
     private void AddTest()
     {
       //Wait for DeltaV simulation to be instantiated and to finish.
@@ -38,6 +49,9 @@ namespace SystemHeat
 
     private void RemoveTest()
     {
+      // EngineersReport may already be torn down on scene exit; tests are tied
+      // to its lifetime and don't need to be removed in that case.
+      if (EngineersReport.Instance == null) return;
 
       //Only if it was actually added, deregister it.
       if (tempTest != null) EngineersReport.Instance.RemoveTest(tempTest);

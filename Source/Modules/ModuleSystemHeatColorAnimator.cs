@@ -84,7 +84,7 @@ namespace SystemHeat
     {
 
       targetRenderers = new List<Renderer>();
-      if (includedTransformList == "")
+      if (string.IsNullOrEmpty(includedTransformList))
       {
         foreach (Transform x in part.GetComponentsInChildren<Transform>())
         {

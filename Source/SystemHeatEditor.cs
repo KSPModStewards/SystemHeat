@@ -40,6 +40,12 @@ namespace SystemHeat
       RemoveEditorCallbacks();
       Instance = null;
     }
+
+    private void OnHotReload(MonoBehaviour old)
+    {
+      if (HighLogic.LoadedSceneIsEditor && EditorLogic.fetch != null)
+        InitializeEditorConstruct(EditorLogic.fetch.ship, false);
+    }
     protected void FixedUpdate()
     {
       if (simulator != null)
@@ -51,7 +57,6 @@ namespace SystemHeat
           simulator.SimulationSpeed = SystemHeatUI.Instance.toolbarPanel.SimSituationVelocity;
         }
         simulator.SimulateEditor();
-        
       }
     }
     #region Editor
