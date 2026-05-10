@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.Localization;
+using Unity.Profiling;
 
 namespace SystemHeat
 {
@@ -49,10 +50,10 @@ namespace SystemHeat
     [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "Harvester Efficiency")]
     public string HarvesterEfficiency = "-1%";
 
-    // base paramters
-    private List<ResourceBaseRatio> inputs;
-    private List<ResourceBaseRatio> outputs;
     protected ModuleSystemHeat heatModule;
+
+    private static readonly ProfilerMarker BaseFixedUpdateMarker = new("ModuleResourceHarvester.FixedUpdate");
+
     public override string GetInfo()
     {
       string info = base.GetInfo();
@@ -60,117 +61,131 @@ namespace SystemHeat
       int pos = info.IndexOf("\n\n");
       if (pos < 0)
         return info;
-      else
-        return info.Substring(0, pos) + Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_PartInfoAdd",
-          Utils.ToSI(systemPower, "F0"),
-          systemOutletTemperature.ToString("F0"),
-          shutdownTemperature.ToString("F0")
-          ) + info.Substring(pos);
+
+      var extraInfo = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_PartInfoAdd",
+        Utils.ToSI(systemPower, "F0"),
+        systemOutletTemperature.ToString("F0"),
+        shutdownTemperature.ToString("F0")
+      );
+      return info.Substring(0, pos) + extraInfo + info.Substring(pos);
     }
+
     public void Start()
     {
+      heatModule = ModuleUtils.FindHeatModule(part, systemHeatModuleID);
 
-      heatModule = ModuleUtils.FindHeatModule(this.part, systemHeatModuleID);
+      Utils.Log("[ModuleSystemHeatHarvester] Setup completed", LogType.Modules);
+      Events["ToggleEditorThermalSim"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_SimulateEditor", ConverterName);
+      Fields["HarvesterEfficiency"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency", ConverterName);
+    }
 
+    public override void FixedUpdate()
+    {
       if (HighLogic.LoadedSceneIsFlight)
       {
-        SetupResourceRatios();
+        FixedUpdateFlight();
       }
       else
       {
-        SetupResourceRatios();
-      }
-
-      Utils.Log("[ModuleSystemHeatHarvester] Setup completed", LogType.Modules);
-      Events["ToggleEditorThermalSim"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_SimulateEditor", base.ConverterName);
-      Fields["HarvesterEfficiency"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency", base.ConverterName);
-    }
-    public override void FixedUpdate()
-    {
-      base.FixedUpdate();
-      if (heatModule != null)
-      {
-        if (HighLogic.LoadedSceneIsFlight)
-        {
-          GenerateHeatFlight();
-          UpdateSystemHeatFlight();
-        }
-        else if (HighLogic.LoadedSceneIsEditor)
-        {
-          GenerateHeatEditor();
-
-          Fields["HarvesterEfficiency"].guiActiveEditor = editorThermalSim;
-        }
+        UpdateFlux();
+        Fields["HarvesterEfficiency"].guiActiveEditor = editorThermalSim;
       }
     }
 
     void Update()
     {
-      if (heatModule != null && part.IsPAWVisible())
-      {
-        HarvesterEfficiency = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency_Value", (systemEfficiency.Evaluate(heatModule.currentLoopTemperature) * 100f).ToString("F1"));
-      }
+      if (!part.IsPAWVisible())
+        return;
+
+      HarvesterEfficiency = Localizer.Format(
+        "#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency_Value",
+        (GetHeatThrottle() * 100f).ToString("F1")
+      );
     }
 
-    protected void GenerateHeatEditor()
+    void OnDisable()
     {
-      if (base.IsActivated)
-        heatModule.AddFlux(moduleID, systemOutletTemperature, systemPower, true);
+      heatModule?.AddFlux(moduleID, 0f, 0f, false);
+      HarvesterEfficiency = "-";
+    }
+
+    void FixedUpdateFlight()
+    {
+      if (heatModule == null)
+      {
+        // This disables this module entirely, so it won't be called every frame.
+        enabled = false;
+        return;
+      }
+
+      CheckOverheat();
+
+      if (!IsActivated)
+        enabled = false;
+
+      using (BaseFixedUpdateMarker.ConditionalAuto())
+        base.FixedUpdate();
+    }
+
+    void UpdateFlux() => UpdateFlux(lastTimeFactor);
+    void UpdateFlux(double timeFactor)
+    {
+      if (heatModule == null)
+        return;
+
+      if (ModuleIsActive())
+      {
+        float scale = timeFactor != 0.0 ? 1f : 0f;
+        if (HighLogic.LoadedSceneIsEditor)
+          scale = 1f;
+
+        heatModule.AddFlux(moduleID, systemOutletTemperature, systemPower * scale, true);
+      }
       else
-        heatModule.AddFlux(moduleID, 0f, 0f, false);
-    }
-
-    protected void GenerateHeatFlight()
-    {
-      if (base.ModuleIsActive())
-      {
-        float fluxScale = 1f;
-        if (base.lastTimeFactor == 0d)
-        {
-          fluxScale = 0f;
-        }
-        heatModule.AddFlux(moduleID, systemOutletTemperature, systemPower * fluxScale, true);
-      }
-      else
       {
         heatModule.AddFlux(moduleID, 0f, 0f, false);
       }
     }
-    protected void UpdateSystemHeatFlight()
+
+    void CheckOverheat()
     {
-      if (base.ModuleIsActive())
-      {
-        if (heatModule.currentLoopTemperature > shutdownTemperature)
-        {
-          ScreenMessages.PostScreenMessage(
-            new ScreenMessage(
-              Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Message_Shutdown",
-                                                             part.partInfo.title),
-                                                             3.0f,
-                                                             ScreenMessageStyle.UPPER_CENTER));
-          ToggleResourceConverterAction(new KSPActionParam(0, KSPActionType.Activate));
+      if (!ModuleIsActive())
+        return;
+      if (heatModule.currentLoopTemperature <= shutdownTemperature)
+        return;
 
-          Utils.Log("[ModuleSystemHeatConverter]: Overheated, shutdown fired", LogType.Modules);
+      ScreenMessages.PostScreenMessage(
+        new ScreenMessage(
+          Localizer.Format(
+            "#LOC_SystemHeat_ModuleSystemHeatHarvester_Message_Shutdown",
+            part.partInfo.title),
+          3.0f,
+          ScreenMessageStyle.UPPER_CENTER));
+      StopResourceConverter();
 
-        }
-        base.recipe = ModuleUtils.RecalculateRatios(systemEfficiency.Evaluate(heatModule.currentLoopTemperature), inputs, outputs, inputList, outputList, base.recipe);
-      }
+      Utils.Log("[ModuleSystemHeatConverter]: Overheated, shutdown fired", LogType.Modules);
     }
 
-    private void SetupResourceRatios()
+    public override void StartResourceConverter()
     {
+      enabled = true;
+      base.StartResourceConverter();
+    }
 
-      inputs = new List<ResourceBaseRatio>();
-      outputs = new List<ResourceBaseRatio>();
+    // In stock this would use the ModuleCoreHeat on the same part. We don't
+    // want that, and just override it to point to our own efficiency multiplier.
+    public override float GetHeatThrottle()
+    {
+      if (heatModule == null)
+        return 1f;
 
-      for (int i = 0; i < inputList.Count; i++)
-      {
-        inputs.Add(new ResourceBaseRatio(inputList[i].ResourceName, inputList[i].Ratio));
-      }
-      for (int i = 0; i < outputList.Count; i++)
-      {
-        outputs.Add(new ResourceBaseRatio(outputList[i].ResourceName, outputList[i].Ratio));
-      }
+      return systemEfficiency.Evaluate(heatModule.currentLoopTemperature);
+    }
+
+    protected override void PostProcess(ConverterResults result, double deltaTime)
+    {
+      base.PostProcess(result, deltaTime);
+      UpdateFlux(result.TimeFactor);
     }
   }
 }
