@@ -5,7 +5,6 @@ namespace SystemHeat
 
   public class SystemHeatGameSettings_ReactorDamage : GameParameters.CustomParameterNode
   {
-
     [GameParameters.CustomParameterUI("AllowReactorDamage",
       title = "#LOC_SystemHeat_Settings_AllowReactorDamage_Title",
       toolTip = "#LOC_SystemHeat_Settings_AllowReactorDamage_Tooltip",

@@ -69,6 +69,8 @@ namespace SystemHeat.UI
       GameEvents.onEditorStarted.Remove(onEditorStart);
       GameEvents.OnMapEntered.Remove(onEnterMapView);
       GameEvents.OnMapExited.Remove(onExitMapView);
+      ClearPanels();
+      DestroyOverlay();
       Instance = null;
 
     }

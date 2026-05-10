@@ -50,8 +50,14 @@ namespace SystemHeat.UI
     {
       if (ApplicationLauncher.Ready)
         OnGUIAppLauncherReady();
+    }
 
-
+    // Explicitly destroy the toolbar panel because hot-reloading will destroy
+    // the old component but leave the panel game object orphaned.
+    private void OnHotReload(MonoBehaviour old)
+    {
+      DestroyToolbarPanel();
+      toolbarPanel = null;
     }
 
     protected void CreateToolbarPanel()
@@ -264,11 +270,12 @@ namespace SystemHeat.UI
     {
       Utils.Log("[UI]: OnDestroy Fired", LogType.UI);
       // Remove the stock toolbar button
-      GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
       if (stockToolbarButton != null)
       {
         ApplicationLauncher.Instance.RemoveModApplication(stockToolbarButton);
+        stockToolbarButton = null;
       }
+      DestroyToolbarPanel();
       GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
       GameEvents.onGUIApplicationLauncherDestroyed.Remove(OnGUIAppLauncherDestroyed);
       GameEvents.onGUIApplicationLauncherUnreadifying.Remove(new EventData<GameScenes>.OnEvent(OnGUIAppLauncherUnreadifying));

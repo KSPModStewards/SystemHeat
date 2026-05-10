@@ -28,6 +28,10 @@
     <PackageReference Include="KSPBuildTools" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Profiling'">
+    <AssemblyMetadata Include="HotReload" Value="true" />
+  </ItemGroup>
+
   <ItemGroup>
     <KSPVersionFile Include="SystemHeat.version">
       <Destination>$(KSPBT_ModRoot)/Versioning/SystemHeat.version</Destination>

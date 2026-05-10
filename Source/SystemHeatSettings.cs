@@ -127,6 +127,7 @@ namespace SystemHeat
     {
       return SystemHeatSettings.ColorData[Mathf.Clamp(id, 0, 9)];
     }
+
     /// <summary>
     /// Load data from configuration
     /// </summary>
@@ -216,5 +217,7 @@ namespace SystemHeat
         return new CoolantType();
       }
     }
+
+    static void OnHotLoad() => Load();
   }
 }
