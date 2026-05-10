@@ -105,7 +105,7 @@ namespace SystemHeat
 
       CheckOverheat();
 
-      if (!IsActivated)
+      if (!IsActivated && !AlwaysActive)
         enabled = false;
 
       using (BaseFixedUpdateMarker.ConditionalAuto())
