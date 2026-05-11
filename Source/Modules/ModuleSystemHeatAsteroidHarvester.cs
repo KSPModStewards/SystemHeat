@@ -1,5 +1,6 @@
 using UnityEngine;
 using KSP.Localization;
+using SystemHeat.Addons;
 using Unity.Profiling;
 
 namespace SystemHeat
@@ -39,6 +40,9 @@ namespace SystemHeat
 
     protected ModuleSystemHeat heatModule;
 
+    // Stock ModuleAsteroidDrill uses Physics.DefaultRaycastLayers (no mask).
+    private const int ImpactLayerMask = -5;
+
     private static readonly ProfilerMarker BaseFixedUpdateMarker = new("ModuleAsteroidDrill.FixedUpdate");
 
     public override string GetInfo()
@@ -63,6 +67,13 @@ namespace SystemHeat
 
       Utils.Log("[ModuleSystemHeatAsteroidHarvester] Setup completed", LogType.Modules);
       Fields["HarvesterEfficiency"].guiName = Localizer.Format("#LOC_SystemHeat_ModuleSystemHeatHarvester_Field_Efficiency", ConverterName);
+
+      RegisterImpactRaycast();
+    }
+
+    void OnEnable()
+    {
+      RegisterImpactRaycast();
     }
 
     public override void FixedUpdate()
@@ -92,6 +103,35 @@ namespace SystemHeat
     {
       heatModule?.AddFlux(moduleID, 0f, 0f, false);
       HarvesterEfficiency = "-";
+      RaycastManager.Instance?.Unregister(this);
+    }
+
+    void RegisterImpactRaycast()
+    {
+      if (!HighLogic.LoadedSceneIsFlight || impactTransformCache == null)
+        return;
+      RaycastManager.Instance?.Register(this, impactTransformCache, ImpactRange, ImpactLayerMask);
+    }
+
+    protected override bool CheckForImpact()
+    {
+      if (string.IsNullOrEmpty(ImpactTransform) || impactTransformCache == null)
+        return true;
+
+      var hit = RaycastManager.Instance?.GetRaycastHit(this);
+      if (hit is not RaycastHit raycastHit)
+      {
+        // If we're not registered for whatever reason then do the raycast ourselves.
+        var origin = impactTransformCache.position;
+        if (!Physics.Raycast(new Ray(origin, impactTransformCache.forward), out raycastHit, ImpactRange, ImpactLayerMask))
+          return false;
+      }
+
+      var collider = raycastHit.collider;
+      if (collider == null)
+        return false;
+
+      return collider.gameObject.GetComponentUpwards<ModuleAsteroid>() != null;
     }
 
     void FixedUpdateFlight()
