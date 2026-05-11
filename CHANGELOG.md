@@ -1,3 +1,8 @@
+## Unreleased
+- Improved performance
+  - SystemHeat resource converters now fully disable themselves when inactive.
+  - Several other optimizations to make resource converters faster.
+
 ## 0.9.0 - 2026-05-08
 
 - Fixed memory leaks from dangling event handlers.
