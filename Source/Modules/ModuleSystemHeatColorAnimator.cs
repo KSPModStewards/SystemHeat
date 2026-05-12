@@ -34,108 +34,112 @@ namespace SystemHeat
     public string includedTransformList;
 
 
-    public string ScalarModuleID
-    {
-      get { return moduleID; }
-    }
-    public bool CanMove
-    {
-      get { return true; }
-    }
-    public float GetScalar
-    {
-      get { return animationFraction; }
-    }
+    public string ScalarModuleID => moduleID;
 
-    public EventData<float, float> OnMoving
-    {
-      get { return new EventData<float, float>("OnMoving"); }
-    }
+    public bool CanMove => true;
 
-    public EventData<float> OnStop
-    {
-      get { return new EventData<float>("OnStop"); }
-    }
+    public float GetScalar => animationFraction;
 
 
-    public void SetScalar(float t)
-    {
-      animationGoal = t;
-    }
+    public EventData<float, float> OnMoving => new("OnMoving");
+    public EventData<float> OnStop => new("OnStop");
 
-    public bool IsMoving()
-    {
-      return true;
-    }
-
-
+    public void SetScalar(float t) => animationGoal = t;
+    public bool IsMoving() => true;
 
     public void SetUIWrite(bool value)
     { }
     public void SetUIRead(bool value)
     { }
 
+    float lastFraction = float.NaN;
+    float animationFraction = 0f;
+    float animationGoal = 0f;
+    Renderer[] targetRenderers = [];
+    int propertyID;
 
-    protected float animationFraction = 0f;
-    protected float animationGoal = 0f;
-    protected List<Renderer> targetRenderers;
-
-    protected void Start()
+    void Start()
     {
+      if (string.IsNullOrEmpty(shaderProperty))
+      {
+        enabled = false;
+        return;
+      }
 
-      targetRenderers = new List<Renderer>();
+      propertyID = Shader.PropertyToID(shaderProperty);
+      var renderers = new List<Renderer>();
+
       if (string.IsNullOrEmpty(includedTransformList))
       {
-        foreach (Transform x in part.GetComponentsInChildren<Transform>())
+        foreach (var transform in part.GetComponentsInChildren<Transform>())
         {
-          Renderer r = x.GetComponent<Renderer>();
+          var renderer = transform.GetComponent<Renderer>();
+          if (renderer == null)
+            continue;
+          if (!renderer.sharedMaterial.HasProperty(propertyID))
+            continue;
 
-          if (r != null && r.material.HasProperty(shaderProperty)) targetRenderers.Add(r);
+          renderers.Add(renderer);
         }
       }
       else
       {
-        string[] allXformNames = includedTransformList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-        foreach (string xformName in allXformNames)
+        var names = includedTransformList.Split([','], StringSplitOptions.RemoveEmptyEntries);
+        foreach (var name in names)
         {
-          Transform[] xforms = part.FindModelTransforms(xformName);
-          foreach (Transform x in xforms)
+          foreach (var transform in part.FindModelTransforms(name))
           {
-            Renderer r = x.GetComponent<Renderer>();
+            var renderer = transform.GetComponent<Renderer>();
+            if (renderer == null)
+              continue;
+            if (!renderer.sharedMaterial.HasProperty(propertyID))
+              continue;
 
-            if (r != null && r.material.HasProperty(shaderProperty))
-              targetRenderers.Add(r);
+            renderers.Add(renderer);
           }
         }
       }
-      if (HighLogic.LoadedSceneIsEditor && targetRenderers != null)
-      {
-        animationFraction = 0f;
-        Color c = new Color(redCurve.Evaluate(animationFraction) * colorScale, greenCurve.Evaluate(animationFraction) * colorScale, blueCurve.Evaluate(animationFraction) * colorScale, alphaCurve.Evaluate(animationFraction) * colorScale);
 
-        foreach (Renderer r in targetRenderers)
-        {
-          r.material.SetColor(shaderProperty, c);
-        }
+      targetRenderers = renderers.ToArray();
+      if (targetRenderers.Length == 0)
+      {
+        enabled = false;
+        return;
       }
-    
+
+      if (HighLogic.LoadedSceneIsEditor)
+        UpdateMaterials();
     }
 
-    protected void Update()
+    void Update()
     {
-      if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor && targetRenderers != null)
-      {
-        animationFraction = Mathf.MoveTowards(animationFraction, animationGoal, TimeWarp.deltaTime * animRate);
+      animationFraction = Mathf.MoveTowards(animationFraction, animationGoal, TimeWarp.deltaTime * animRate);
+      if (Mathf.Abs(animationFraction - lastFraction) < 1e-3)
+        return;
 
-        Color c = new Color(redCurve.Evaluate(animationFraction) * colorScale, greenCurve.Evaluate(animationFraction) * colorScale, blueCurve.Evaluate(animationFraction) * colorScale, alphaCurve.Evaluate(animationFraction) * colorScale);
-
-        foreach (Renderer r in targetRenderers)
-        {
-          if (r != null && r.material != null)
-          r.material.SetColor(shaderProperty, c);
-        }
-      }
+      lastFraction = animationFraction;
+      UpdateMaterials();
     }
 
+    void UpdateMaterials()
+    {
+      var c = new Color(
+        redCurve.Evaluate(animationFraction) * colorScale,
+        greenCurve.Evaluate(animationFraction) * colorScale,
+        blueCurve.Evaluate(animationFraction) * colorScale,
+        alphaCurve.Evaluate(animationFraction) * colorScale
+      );
+
+      foreach (var renderer in targetRenderers)
+      {
+        if (renderer == null)
+          continue;
+        var material = renderer.material;
+        if (material == null)
+          continue;
+
+        material.SetColor(propertyID, c);
+      }
+    }
   }
 }
