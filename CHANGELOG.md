@@ -1,4 +1,4 @@
-## Unreleased
+## 0.9.1 - 2026-05-12
 
 - Fixed memory leaks from dangling event handlers.
 - Improved performance
