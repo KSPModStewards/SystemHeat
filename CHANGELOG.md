@@ -2,6 +2,7 @@
 - Improved performance
   - SystemHeat resource converters now fully disable themselves when inactive.
   - Several other optimizations to make resource converters faster.
+  - Color animations no longer update all materials when they haven't changed.
 
 ## 0.9.0 - 2026-05-08
 
